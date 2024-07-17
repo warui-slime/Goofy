@@ -1,0 +1,287 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+
+{% block title %}Home{% endblock title %}
+{% block content %}
+    <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
+        <div id="ribbonbox" class="flex poppins-regular mt-20 scroll-smooth  w-[98%] space-x-2">
+        </div>
+        <div class="flex-col poppins-regular mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                <div>Heading 1</div>
+                <div id="scrollnavbtn" class="flex">
+                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                    </button>
+                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv1')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                    </button>
+                </div>
+            </div>
+            <div id="parentscrolldiv1"
+                class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+                {% for _ in 'x'|rjust:10 %}
+                <div>
+                    <div class="h-40 w-40 bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                    </div>
+                    <div class="w-32 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                    <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="flex-col poppins-regular mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                <div>Trending</div>
+                <div id="scrollnavbtn" class="flex">
+                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv2')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                    </button>
+                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv2')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                    </button>
+                </div>
+            </div>
+            <div id="parentscrolldiv2"
+                class="sm:scrollbar   sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+                {% for _ in 'x'|rjust:10 %}
+                <div>
+                    <div class="h-40 w-40 bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                    </div>
+                    <div class="w-32 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                    <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="flex-col poppins-regular mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                <div>Albums Right Now</div>
+                <div id="scrollnavbtn" class="flex">
+                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv3')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                    </button>
+                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv3')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                    </button>
+                </div>
+            </div>
+            <div id="parentscrolldiv3"
+                class="sm:scrollbar sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+
+                {% for _ in 'x'|rjust:10 %}
+                <div>
+                    <div class="h-40 w-40 bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                    </div>
+                    <div class="w-32 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                    <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="flex-col poppins-regular mt-10 space-y-3 text-white">
+            <div class=" w-[98%] text-[30px] ">Top Songs</div>
+            <div id="h4" class="w-full  grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-y-2">
+                {% for _ in 'x'|rjust:15 %}
+                <div>
+                    <div class="flex space-x-2">
+                        <div class="w-[60px] h-[60px] bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                        </div>
+                        <div>
+                            <div class="h-2 w-24 rounded bg-gray-700 animate-pulse mt-1"></div>
+                            <div class="h-2 w-20 rounded bg-gray-700 animate-pulse mt-3"></div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="flex-col poppins-regular mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                <div>Trending Artists</div>
+                <div id="scrollnavbtn" class="flex">
+                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv5')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                    </button>
+                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv5')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                    </button>
+                </div>
+            </div>
+            <div id="parentscrolldiv5"
+                class="sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5 pl-1">
+                {% for _ in 'x'|rjust:10 %}
+                <div>
+                    <div class="h-[121px] w-[121px] bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                    </div>
+                    <div class="w-24 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+{% endblock content %}
+
+
+
+    {% block script %}
+    <script src="{% static 'mainapp/homepageassets/newhome.js' %}"></script>
+    <script>
+        $(document).ready(function insertData() {
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'getHomedata' %}",
+                success: function (response) {
+
+                    $('#parentscrolldiv1').empty();
+                    response.heading1.forEach(function(item){
+                      
+                        $('#parentscrolldiv1').append(
+                            `
+                            <div>
+                                <div class="h-40 w-40 flex justify-center">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1">
+                                    ${item.title}
+                                </div>
+                                <div class="text-white w-40">
+                                 ${item.artist}
+                                </div>
+                            </div>
+                        `
+                        );
+                            
+                        }
+                    );
+
+                    $('#parentscrolldiv2').empty();                   
+                    response.heading2.forEach(function(item){
+                        
+                        $('#parentscrolldiv2').append(
+                            `
+                            <div>
+                                <div class="h-40 w-40 ">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1">
+                                    ${item.title}
+                                </div>
+                                <div class="text-white w-40">
+                                 ${item.artist}
+                                </div>
+                            </div>
+                        `
+                        );
+                            
+                        }
+                    );
+
+                    $('#parentscrolldiv3').empty();
+                    response.heading3.forEach(function(item){
+                        
+                        $('#parentscrolldiv3').append(
+                            `
+                            <div>
+                                <div class="h-40 w-40 ">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1">
+                                    ${item.title}
+                                </div>
+                                <div class="text-white w-40">
+                                 ${item.artist}
+                                </div>
+                            </div>
+                        `
+                        );
+                            
+                        }
+                    );
+
+                    $('#h4').empty();
+                    response.heading4.forEach(function(item){
+                        
+                        $('#h4').append(
+                            `
+                            <div>
+                                <div class="flex space-x-2">
+                                    <div class="">
+                                        <img src="${item.thumbnail}" alt="">
+                                    </div>
+                                    <div>
+                                        <div>${item.title}</div>
+                                        <div>${item.artist}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        );
+                            
+                        }
+                    );
+
+                    $('#parentscrolldiv5').empty();
+                    response.heading5.forEach(function(item){
+                        
+                        $('#parentscrolldiv5').append(
+                            `
+                            <div >
+                                <div class="h-[121px] w-[121px] scale-125 flex justify-center">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 mt-4">
+                                    ${item.title}
+                                </div>
+                                
+                            </div>
+                        `
+                        );
+                            
+                        }
+                    );
+                    }
+
+                        
+                    
+
+                });
+            });
+        
+    </script>
+    {% endblock script %}
+    <!-- <script>$('#parentscrolldiv1').empty();</script> -->

@@ -1,0 +1,210 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+
+{% block title %}Explore{% endblock title %}
+{% block content %}
+    <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
+        <div id="ribbonbox" class="flex poppins-regular mt-20 scroll-smooth  w-[98%] space-x-2">
+
+        </div>
+
+        <div class="flex-col poppins-regular mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                <div>New Releases</div>
+                <div id="scrollnavbtn" class="flex">
+                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                    </button>
+                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv1')">
+                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                    </button>
+                </div>
+            </div>
+            <div id="h1"
+                class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5 pl-1">
+                {% for _ in 'x'|rjust:10 %}
+                <div>
+                    <div class="h-[121px] w-[121px] bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                    </div>
+                    <div class="w-24 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                    </div>
+                    <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-2 ml-1">
+
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="text-white flex w-[98%] text-[30px] justify-between">
+            <div>Top Playlists</div>
+            <div id="scrollnavbtn" class="flex">
+                <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv2')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                </button>
+                <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv2')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                </button>
+            </div>
+        </div>
+        <div id="h2"
+            class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+            {% for _ in 'x'|rjust:10 %}
+            <div>
+                <div class="h-[190px] w-[190px]  bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                </div>
+                <div class="text-white w-40 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex-col poppins-regular mt-10">
+            <div class="text-white flex w-full text-[30px]">
+                Mood & genres
+            </div>
+            <div id="h3" class="mt-5 w-[98%] grid grid-cols-6 grid-rows-6 gap-5 text-white *:poppins-regular">
+                {% for _ in 'x'|rjust:36 %}
+
+
+                <div class=" mr-2 rounded-lg hover:shadow-lg h-10 w-28 bg-gray-800 animate-pulse shadow-lg">
+
+                </div>
+
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="text-white flex w-[98%] text-[30px] justify-between">
+            <div>Heading 4</div>
+            <div id="scrollnavbtn" class="flex">
+                <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv4')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                </button>
+                <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv4')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                </button>
+            </div>
+        </div>
+        <div id="h4"
+            class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+            {% for _ in 'x'|rjust:10 %}
+            <div>
+                <div class="h-40 w-40 bg-gray-800 animate-pulse shadow-lg rounded-md">
+
+                </div>
+                <div class="w-32 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                </div>
+                <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    
+{% endblock content %}
+
+
+
+
+    {% block script %}
+    <script src="{% static 'mainapp/explorepage/newexplore.js' %}"></script>
+    <script>
+        $(document).ready(function insertData() {
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'getExploredata' %}",
+                success: function (response) {
+
+
+
+                    $('#h1').empty();
+                    response.heading1.forEach(function (item) {
+                        $('#h1').append(
+                            `
+                            <div>
+                                <div class="h-[141px] w-[141px] scale-125 pl-4">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-32 mt-1">
+                                    ${item.title}
+                                </div>
+                                <div class="text-white w-32">
+                                 ${item.artist}
+                                </div>
+                            </div>
+                        `
+                        );
+
+                    }
+                    );
+                    $('#h2').empty();
+                    response.heading2.forEach(function (item) {
+                        $('#h2').append(
+                            `
+                            <div>
+                                <div class="h-[160px] w-[160px] flex items-center bg-[#1E1E1E]"">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1">
+                                    ${item.title}
+                                </div>
+                            </div>
+                        `
+                        );
+
+                    }
+                    );
+                    $('#h3').empty();
+                    response.heading3.forEach(function (item) {
+                        $('#h3').append(
+                            `
+                            <button class="bg-[${item.mcolor}] mr-2 text-black text-lg font-semibold border-white border-[3px] rounded-lg hover:shadow-lg hover:shadow-white hover:scale-110 justify-stretch min-w-full">
+                                <div class="px-5 py-1 text-sm">${item.title}</div>
+                            </button>
+                        `
+                        );
+
+                    }
+                    );
+                    $('#h4').empty();
+                    response.heading4.forEach(function (item) {
+                        $('#h4').append(
+                            `
+                            <div>
+                                <div class="h-40 w-40 ">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1">
+                                    ${item.title}
+                                </div>
+                                <div class="text-white w-40">
+                                 ${item.artist}
+                                </div>
+                            </div>
+                        `
+                        );
+
+                    }
+                    );
+
+                }
+
+
+
+
+            });
+        });
+
+    </script>
+    {% endblock script %}

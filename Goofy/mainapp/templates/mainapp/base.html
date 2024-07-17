@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock title %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'mainapp/homepageassets/style.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<!--blur-sm-->
+
+<body>
+    <div class="flex flex-col w-full bg-[#121212]">
+        <div id="leftnav"
+            class="hidden sm:block w-[50%] max-w-[240px] sm:w-[72px] h-full fixed z-20 bg-[#121212]  border-r-[2px] border-white">
+            <div class="gradnav">
+                <div id="hamopen" class="flex  h-10 w-10 justify-center rounded-2xl pt-8  ml-3">
+                    <button class="sm:hidden" onclick="lnav()">
+                        <img src="{% static 'mainapp/homepageassets/cross.svg' %}" alt="">
+                    </button>
+                    <button id="ham2" class="hidden sm:block" onclick="lnav()">
+                        <img src="{% static 'mainapp/homepageassets/hamburger1.svg' %}" alt="">
+                    </button>
+                </div>
+                <div class="flex-col pt-8 space-y-5 poppins-regular text-white">
+
+
+                    <div id="hel"
+                        class="*:my-2 *:flex *:space-x-7 *:rounded-md *:items-center *:h-12 *:w-[80%] *:ml-[0.4rem] *:pl-[0.85rem]">
+                        <a id="homebox" class="hover:bg-[#5398C9]" href = "{% url 'home' %}">
+                            <div title="Home"><img src="{% static 'mainapp/homepageassets/home1.svg' %}" alt=""></div>
+                            <div id="home" class="text-center pt-0.5 sm:hidden">Home</div>
+                        </a>
+                        <a id="explorebox" class="hover:bg-[#5398C9]" href="{% url 'explore' %}">
+                            <div title="Explore"><img id="exploreimg"
+                                    src="{% static 'mainapp/homepageassets/explore2.svg' %}" alt="">
+                            </div>
+                            <div id="explore" class="text-center pt-0.5 sm:hidden">Explore</div>
+                        </a>
+                        <button id="librarybox" class=" hover:bg-[#5398C9]" onclick="location.href = 'library.html'">
+                            <div title="Library"><img src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
+                            </div>
+                            <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
+                        </button>
+                        <button id="likedsongsbox" class=" hover:bg-[#5398C9]" onclick="location.href = 'mylikes.html'">
+                            <div title="My Likes"><img id="likedsongsimg"
+                                    src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
+                            </div>
+                            <div id="likedsongs" class="text-center pt-0.5 sm:hidden">My Likes</div>
+                        </button>
+                    </div>
+
+                    <hr id="hrnav" class="mx-1 border-1">
+
+                    <button id="profilebox"
+                        class="mt-2 h-[50px] flex rounded-[10px] hover:bg-[#5398C9] w-[80%] ml-2 pl-[0.7rem] space-x-7 items-center"
+                        onclick="location.href = 'profile.html'">
+                        <div id="profileimg">
+                            <img src="{% static 'mainapp/homepageassets/profile2.svg' %}" alt="">
+                        </div>
+                        <div id="profile" class="text-center pt-1 sm:hidden">Profile</div>
+                    </button>
+                </div>
+                <div class="h-7"></div>
+            </div>
+        </div>
+    </div>
+    <div id="topbar" class="flex justify-between p-2 fixed z-10 w-full bg-[#121212] ">
+        <div id="ham" class="flex hover:bg-[#68686638] h-10 w-10 justify-center rounded-2xl mt-1">
+            <button onclick="lnav()">
+                <img src="{% static 'mainapp/homepageassets/hamburger1.svg' %}" alt="">
+            </button>
+        </div>
+        <div id="searchbox"
+            class="hidden mt-2 sm:block flex-col fixed w-[70%] max-w-[500px] h-max poppins-regular  bg-[#1E1E1E] border-white border-2 rounded-2xl sm:ml-[80px]">
+            <div id="searchpic" class="pt-1 pl-1 flex w-full">
+                <div class="border-white">
+                    <img src="{% static 'mainapp/homepageassets/Search.svg' %}" alt="">
+                </div>
+                <div class="px-1 w-full">
+                    <input id="searchcontent" type="text" id="" placeholder="Search songs, albumns, artists , podcasts"
+                        class="text-lg bg-transparent text-white h-[40px] w-full outline-none" autocomplete="off">
+                </div>
+                <div id="clearcross" class="pr-3 pt-2 hidden">
+                    <button onclick="clearinput()"><img src="{% static 'mainapp/homepageassets/cross.svg' %}" alt=""></button>
+                </div>
+            </div>
+           
+            <div id="searchsuggestions" class="hidden w-[100%]  *:bg-[#1E1E1E] text-white text-lg rounded-b-lg p-1">
+                {% for i in '123456' %}
+                <hr>
+                <div class="flex">
+                    <div class="p-1 w-[50px] h-[40px]">
+                        <img id="pic{{i}}" src="{% static 'mainapp/homepageassets/songimg1.svg' %}" alt="">
+                    </div>
+                    <div id="songname{{i}}" class="py-1 w-max h-[40px] text-nowrap overflow-x-hidden overflow-clip"
+                        onmouseenter="this.scrollLeft+=this.textContent.length">
+                        songname
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+        <div id="logo">
+            <img src="{% static 'mainapp/homepageassets/logo60.svg' %}" alt="">
+        </div>
+        <div id="searchbtn" class="p-3 sm:hidden" onclick="searchboxappear()">
+            <button>
+                <img src="{% static 'mainapp/homepageassets/Search.svg' %}" alt="">
+            </button>
+        </div>
+
+
+
+    </div>
+
+    
+        {% block content %} {% endblock content %}
+
+
+
+    <script src="{% static 'mainapp/homepageassets/newmobile.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    {% block script %} {% endblock script %}
+   
+
+</body>
+
+</html>

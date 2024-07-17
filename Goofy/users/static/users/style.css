@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+
+
+    html,
+    body {
+        /* @apply bg-gradient-to-br from-gray-900 from-10% via-gray-800 via-15% to-lime-300 to-80% h-[3000px]; */
+        background-color: black;
+    }
+
+    .faster-one {
+        font-family: "Faster One", system-ui;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 64px;
+    }
+
+    .faster-one-small {
+        font-family: "Faster One", system-ui;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 40px;
+    }
+
+    .inter {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 700;
+        font-style: normal;
+
+    }
+
+    .interlight {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+
+    }
+
+    .poppins-regular {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .poppins-medium {
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+    }
+
+
+    .scrollbar::-webkit-scrollbar {
+        width: 20px;
+        height: 10px;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #94a3b8;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 100vh;
+        border: 3px solid #94a3b8;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        appearance: none;
+        /* creating a custom design */
+        width: 100%;
+        cursor: pointer;
+        outline: 2px solid #111827;
+        /*  slider progress trick  */
+        overflow: hidden;
+        border-radius: 16px;
+    }
+
+    .slider::-webkit-slider-runnable-track {
+        background-color: #6b7280;
+        /* Change track color in WebKit browsers */
+    }
+
+    .slider::-moz-range-track {
+        background-color: #688170;
+        /* Change track color in Firefox */
+    }
+
+    .slider::-ms-track {
+        background-color: #688170;
+        /* Change track color in IE/Edge */
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        background-color: #ffb300;
+        /* Change thumb color in WebKit browsers */
+        border-radius: 50%;
+        box-shadow: -10007px 0 0 10000px #bef264;
+
+    }
+
+    .slider::-moz-range-thumb {
+        -moz-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background-color: #118c4a;
+        /* Change thumb color in Firefox */
+        border-radius: 50%;
+        box-shadow: -407px 0 0 400px rgb(55, 65, 81);
+    }
+
+    .slider::-ms-thumb {
+        -ms-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background-color: #118c4a;
+        /* Change thumb color in IE/Edge */
+        border-radius: 50%;
+        box-shadow: -407px 0 0 400px rgb(55, 65, 81);
+    }
+
+    .gradnav {
+        background: linear-gradient(179deg, #02280A 6.96%, #074515 22.24%, #093312 40.24%, #0A5119 55.45%, #052B0D 71.37%, #0C4619 87.31%, #000 99.62%);
+    }
+
+    /* Ensure horizontal scroll on smaller screens */
+   
+
+}

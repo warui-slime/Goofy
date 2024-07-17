@@ -1,2 +1,5 @@
 \newenv
 \Goofy\Goofy\__pycache__
+\Goofy\Goofy\mainapp\__pycache__
+\Goofy\Goofy\mainapp\utils\__pycache__
+\Goofy\Goofy\users\__pycache__

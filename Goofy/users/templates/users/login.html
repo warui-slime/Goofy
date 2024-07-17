@@ -1,0 +1,147 @@
+{% load static %}
+{% load socialaccount %} 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'users/style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Goofy - Login</title>
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="popup-overlay" id="popupOverlay"></div>
+  <div class="popup" id="forgotPasswordPopup">
+    <h2 class="text-black">Forgot Password</h2>
+    <form method="post" action="{% url 'password_reset' %}">
+      {% csrf_token %}
+      <input type="email" name="email" placeholder="Enter your email" required class="h-[45px] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
+      <button type="submit" class="mt-4 w-full h-10 bg-[#FAFF00] hover:bg-[#a7a843] active:bg-[#c3c55a] rounded-lg">Submit</button>
+    </form>
+    <button onclick="closePopup()" class="mt-4 w-full h-10 bg-gray-500 text-white rounded-lg">Close</button>
+  </div>
+
+  <div class="w-full flex flex-col items-center h-screen">
+    <div class="mt-[2%] faster-one text-[#FAFF00]">GOOFY</div>
+    <form method="post" class="mt-[3%] items-center flex flex-col w-[50%] min-w-[250px]">
+      {% csrf_token %}
+      <div class="flex flex-col space-y-[5%] w-[40%] min-w-[250px]">
+        <div class="text-white text-[24px] pr-[11%] font-bold inter">Login with</div>
+        <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}" required class="h-[45px] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
+        {% if form.username.errors %}
+          <div class="hidden username-errors">
+            {% for error in form.username.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <input type="password" name="password" placeholder="Password" required class="h-[45px] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
+        {% if form.password.errors %}
+          <div class="hidden password-errors">
+            {% for error in form.password.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <a href="javascript:void(0);" onclick="openPopup()" class="text-white text-end pr-4 inter underline">Forgot Password?</a>
+      </div>
+      <button class="w-[35%] min-w-60 h-11 mt-8 rounded-xl text-center bg-[#FAFF00] hover:bg-[#a7a843] active:bg-[#c3c55a]" type="submit">
+        <div class="py-2 text-black text-xl font-bold inter">Login</div>
+      </button>
+    </form>
+    {% if form.non_field_errors %}
+      <div class="hidden non-field-errors">
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="mt-7 mx-[8rem] text-gray-200 text-opacity-70 text-sm inter">Or login with</div>
+    <hr class="w-[50%] max-w-[210px] mt-3 mx-[90px]">
+    <div class="flex space-x-11 my-6 mx-32">
+      <form action="{% provider_login_url 'google' %}" method="post">
+        {% csrf_token %}
+      <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/glogo.svg' %}" alt=""></button>
+      </form>
+      <form action="{% provider_login_url 'facebook' %}" method="post">
+        {% csrf_token %}
+      <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/flogo.svg' %}" alt=""></button>
+      </form>
+  
+    </div>
+    <div class="flex space-x-1">
+      <div class="text-white">Don't have an account?</div>
+      <a class="text-[#FAFF00] hover:underline" href="{% url 'register' %}">SignUp here</a>
+    </div>
+  </div>
+
+  <script>
+    function openPopup() {
+      document.getElementById("forgotPasswordPopup").style.display = "block";
+      document.getElementById("popupOverlay").style.display = "block";
+    }
+
+    function closePopup() {
+      document.getElementById("forgotPasswordPopup").style.display = "none";
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+
+    function showAlert(message) {
+      alert(message.trim());
+    }
+
+    window.onload = function() {
+      let errors = "";
+      
+      const usernameErrors = document.querySelector('.username-errors');
+      if (usernameErrors) {
+        errors += usernameErrors.innerText.trim() + "\n";
+      }
+
+      const passwordErrors = document.querySelector('.password-errors');
+      if (passwordErrors) {
+        errors += passwordErrors.innerText.trim() + "\n";
+      }
+
+      const nonFieldErrors = document.querySelector('.non-field-errors');
+      if (nonFieldErrors) {
+        errors += nonFieldErrors.innerText.trim() + "\n";
+      }
+
+      if (errors) {
+        showAlert(errors);
+      }
+    }
+  </script>
+</body>
+
+</html>
