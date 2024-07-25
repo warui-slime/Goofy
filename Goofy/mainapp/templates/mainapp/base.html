@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{% static 'mainapp/homepageassets/style.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -19,8 +21,8 @@
 <body>
     <div class="flex flex-col w-full bg-[#121212]">
         <div id="leftnav"
-            class="hidden sm:block w-[50%] max-w-[240px] sm:w-[72px] h-full fixed z-20 bg-[#121212]  border-r-[2px] border-white">
-            <div class="gradnav">
+            class="hidden sm:block w-[50%] max-w-[240px] sm:w-[72px] h-full fixed z-20  border-r-[2px] border-white">
+            <div id="lchild" class="bg-transparent">
                 <div id="hamopen" class="flex  h-10 w-10 justify-center rounded-2xl pt-8  ml-3">
                     <button class="sm:hidden" onclick="lnav()">
                         <img src="{% static 'mainapp/homepageassets/cross.svg' %}" alt="">
@@ -34,8 +36,9 @@
 
                     <div id="hel"
                         class="*:my-2 *:flex *:space-x-7 *:rounded-md *:items-center *:h-12 *:w-[80%] *:ml-[0.4rem] *:pl-[0.85rem]">
-                        <a id="homebox" class="hover:bg-[#5398C9]" href = "{% url 'home' %}">
-                            <div title="Home"><img src="{% static 'mainapp/homepageassets/home1.svg' %}" alt=""></div>
+                        <a id="homebox" class="hover:bg-[#5398C9]" href="{% url 'home' %}">
+                            <div title="Home"><img id="homeimg" src="{% static 'mainapp/homepageassets/home1.svg' %}"
+                                    alt=""></div>
                             <div id="home" class="text-center pt-0.5 sm:hidden">Home</div>
                         </a>
                         <a id="explorebox" class="hover:bg-[#5398C9]" href="{% url 'explore' %}">
@@ -49,12 +52,12 @@
                             </div>
                             <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
                         </button>
-                        <button id="likedsongsbox" class=" hover:bg-[#5398C9]" onclick="location.href = 'mylikes.html'">
+                        <a id="likedsongsbox" class=" hover:bg-[#5398C9]" href="{% url 'mylikes' %}">
                             <div title="My Likes"><img id="likedsongsimg"
                                     src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
                             </div>
                             <div id="likedsongs" class="text-center pt-0.5 sm:hidden">My Likes</div>
-                        </button>
+                        </a>
                     </div>
 
                     <hr id="hrnav" class="mx-1 border-1">
@@ -72,65 +75,896 @@
             </div>
         </div>
     </div>
-    <div id="topbar" class="flex justify-between p-2 fixed z-10 w-full bg-[#121212] ">
-        <div id="ham" class="flex hover:bg-[#68686638] h-10 w-10 justify-center rounded-2xl mt-1">
-            <button onclick="lnav()">
-                <img src="{% static 'mainapp/homepageassets/hamburger1.svg' %}" alt="">
-            </button>
-        </div>
-        <div id="searchbox"
-            class="hidden mt-2 sm:block flex-col fixed w-[70%] max-w-[500px] h-max poppins-regular  bg-[#1E1E1E] border-white border-2 rounded-2xl sm:ml-[80px]">
-            <div id="searchpic" class="pt-1 pl-1 flex w-full">
-                <div class="border-white">
+    <div id="grad-control" class="">
+
+        <div id="topbar" class="flex justify-between p-2 fixed z-10  w-full backdrop-blur">
+            <div>
+
+                <!-- <div id="ham" class="hidden flex hover:bg-[#68686638] h-10 w-10 justify-center rounded-2xl mt-1">
+                    <button onclick="lnav()">
+                        <img src="{% static 'mainapp/homepageassets/hamburger1.svg' %}" alt="">
+                    </button>
+                </div> -->
+            </div>
+            <div id="searchbox"
+                class="hidden mt-2 sm:block flex-col fixed w-[70%] max-w-[500px] h-max poppins-regular  bg-[#1E1E1E] border-white border-2 rounded-2xl sm:ml-[80px]">
+                <div id="searchpic" class="pt-1 pl-1 flex w-full">
+                    <div class="border-white">
+                        <img src="{% static 'mainapp/homepageassets/Search.svg' %}" alt="">
+                    </div>
+                    <div class="px-1 w-full">
+                        <input id="searchcontent" type="text" id=""
+                            placeholder="Search songs, albumns, artists , podcasts"
+                            class="text-lg bg-transparent text-white h-[40px] w-full outline-none" autocomplete="off">
+                    </div>
+                    <div id="clearcross" class="pr-3 pt-2 hidden">
+                        <button onclick="clearinput()"><img src="{% static 'mainapp/homepageassets/cross.svg' %}"
+                                alt=""></button>
+                    </div>
+                </div>
+
+                <div id="searchsuggestions" class="hidden w-[100%]  *:bg-[#1E1E1E] text-white text-lg rounded-b-lg p-1">
+                    {% for i in '123456' %}
+                    <hr>
+                    <div class="flex py-1">
+                        <div class="p-1 w-[50px] h-[50px] bg-gray-700 animate-pulse rounded">
+
+                        </div>
+                        <div id="songname{{i}}" class="m-2 animate-pulse bg-gray-800 h-2 w-32 rounded">
+
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div id="logo">
+                <img src="{% static 'mainapp/homepageassets/logo60.svg' %}" alt="">
+            </div>
+            <div id="searchbtn" class="p-3 sm:hidden" onclick="searchboxappear()">
+                <button>
                     <img src="{% static 'mainapp/homepageassets/Search.svg' %}" alt="">
-                </div>
-                <div class="px-1 w-full">
-                    <input id="searchcontent" type="text" id="" placeholder="Search songs, albumns, artists , podcasts"
-                        class="text-lg bg-transparent text-white h-[40px] w-full outline-none" autocomplete="off">
-                </div>
-                <div id="clearcross" class="pr-3 pt-2 hidden">
-                    <button onclick="clearinput()"><img src="{% static 'mainapp/homepageassets/cross.svg' %}" alt=""></button>
-                </div>
-            </div>
-           
-            <div id="searchsuggestions" class="hidden w-[100%]  *:bg-[#1E1E1E] text-white text-lg rounded-b-lg p-1">
-                {% for i in '123456' %}
-                <hr>
-                <div class="flex">
-                    <div class="p-1 w-[50px] h-[40px]">
-                        <img id="pic{{i}}" src="{% static 'mainapp/homepageassets/songimg1.svg' %}" alt="">
-                    </div>
-                    <div id="songname{{i}}" class="py-1 w-max h-[40px] text-nowrap overflow-x-hidden overflow-clip"
-                        onmouseenter="this.scrollLeft+=this.textContent.length">
-                        songname
-                    </div>
-                </div>
-                {% endfor %}
-                
+                </button>
             </div>
         </div>
-        <div id="logo">
-            <img src="{% static 'mainapp/homepageassets/logo60.svg' %}" alt="">
-        </div>
-        <div id="searchbtn" class="p-3 sm:hidden" onclick="searchboxappear()">
-            <button>
-                <img src="{% static 'mainapp/homepageassets/Search.svg' %}" alt="">
-            </button>
-        </div>
-
-
 
     </div>
 
-    
-        {% block content %} {% endblock content %}
+
+    {% block content %} {% endblock content %}
+    <div id="player" class="hidden z-20 bottom-0 fixed h-[75px] w-full bg-[#1E1E1E] animate-pulse">
+        <div id="player-overlay" class="absolute hidden inset-0 bg-transparent opacity-0 z-10 pointer-events-auto">
+        </div>
+        <div class="flex  m-3 text-white justify-between ">
+            <div class="flex space-x-5 w-[30%]">
+                <div id="song-img">
+                    <div class="w-[55px] h-[55px] bg-gray-700 rounded animate-pulse">
+
+                    </div>
+                </div>
+                <div class="w-[80%]">
+                    <div id="player-songname"
+                        class="h-[25px] w-[90%] text-nowrap overflow-hidden overflow-clip font-bold">
+                        Song Name
+                    </div>
+                    <div id="player-author"
+                        class="h-[25px] w-[90%] text-nowrap overflow-x-hidden overflow-clip font-semibold">
+                        Artist Name
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center">
+                <div class="h-[30px] flex space-x-10  justify-center">
+                    <button>
+                        <div class="pt-[5px]">
+                            <img src="{% static 'mainapp/player/shuffle.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <button>
+                        <div class="pt-[5px]">
+                            <img src="{% static 'mainapp/player/playprev.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <button onclick="playpause()">
+                        <div>
+                            <img id="playpause" src="{% static 'mainapp/player/play.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <button>
+                        <div class="pt-[5px]">
+                            <img src="{% static 'mainapp/player/playnext.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <button onclick="changerepeat()">
+                        <div class="pt-[5px]">
+                            <img id="repeatingbtn" src="{% static 'mainapp/player/repeatoff.svg' %}" alt="">
+                        </div>
+                    </button>
+                </div>
+                <div class="h-[25px] flex space-x-5">
+                    <div id="song_progress" class="font-bold">
+                        0:00
+                    </div>
+                    <div>
+                        <audio id="song" preload="auto" autoplay="off">
+
+                        </audio>
+                        <input id="playerprogress" type="range" min="0" max="100" class="slider w-[400px]" value="0">
+                    </div>
+                    <div id="song_duration" class="font-bold">
+                        f:ff
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="flex space-x-5 h-[55px] items-center pl-32">
+                    <button onclick="lyricsbtn()">
+                        <div>
+                            <img id="lyricsbtn" src="{% static 'mainapp/player/lyrics.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <button onclick="likebtn()">
+                        <div>
+                            <img id="likebtn" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
+                        </div>
+                    </button>
+                    <div class="flex space-x-3">
+                        <button id="volumebutton" onclick="volbtn()">
+                            <div class="w-[30px]">
+                                <img id="volbtn" title="mute" src="{% static 'mainapp/player/volmax.svg' %}" alt="">
+                            </div>
+                        </button>
+                        <div>
+                            <input id="volumeslider" type="range" min="0" max="100" class="slider w-[100px]"
+                                value="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
     <script src="{% static 'mainapp/homepageassets/newmobile.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchcontent').on('keyup', function () {
+                let query = $(this).val();
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '{% url "getSuggestions" %}',
+                        data: { 'query': query },
+                        success: function (response) {
+                            $('#searchsuggestions').empty();
+                            response.songs.forEach((item) => {
+                                $('#searchsuggestions').append(
+                                    `
+                                
+                                <hr>
+                                <button class="flex w-full py-1" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.author_name}" thumbnail="${item.thumbnail_url}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                                    <div class=" w-[50px] h-[40px]">
+                                        <img  src="${item.thumbnail_url}" alt="">
+                                    </div>
+
+                                    <div class=" pl-2 pt-1 flex justify-start  h-[40px] text-container sm:w-[500px]">
+                                        <span class="animated-text">
+                                            ${item.title}
+                                        </span>
+                                    </div> 
+                                
+                                </button>`
+                                );
+                                var $lastAddedText = $("#searchsuggestions .animated-text").last();
+
+
+                                var trimmedText = $lastAddedText.text().trim();
+
+
+                                if (trimmedText.length <= 40) {
+
+                                    $lastAddedText.removeClass("animated-text");
+                                    $lastAddedText.closest(".text-container").removeClass("text-container");
+                                }
+                            });
+                            response.artists.forEach((item) => {
+
+                                $('#searchsuggestions').append(
+                                    `
+                                
+                                <hr>
+                                <button class="flex w-full py-1" author_id ='${item.author_id}' onclick = "getAR(this.getAttribute('author_id'),'${item.author_name}')" >
+                                    <div class=" w-[50px] h-[40px] p-1">
+                                        <img  src="${item.thumbnail_url}" alt="">
+                                    </div>
+
+                                    <div class=" pl-2 pt-1 flex justify-start  h-[40px] text-container sm:w-[500px]" >
+                                        <span class="animated-text">
+                                            ${item.author_name}
+                                        </span>
+                                    </div> 
+                                
+                                </button>`
+                                );
+                                var $lastAddedText = $("#searchsuggestions .animated-text").last();
+
+
+                                var trimmedText = $lastAddedText.text().trim();
+
+
+                                if (trimmedText.length <= 40) {
+
+                                    $lastAddedText.removeClass("animated-text");
+                                    $lastAddedText.closest(".text-container").removeClass("text-container");
+                                }
+                            });
+                            if (response.card.title) {
+
+                                $('#searchsuggestions').append(
+                                    `
+                                    
+                                    <hr>
+                                    <div class="flex w-full">
+                                        <div class=" w-[50px] max-h-[40px] flex ">
+                                            <img class="object-cover" src="${response.card.thumbnail_url}" alt="">
+                                        </div>
+    
+                                        <div class=" pl-2 pt-1 w-full h-[40px] text-container">
+                                            <span class="animated-text">
+                                                ${response.card.title}
+                                            </span>
+                                        </div> 
+                                    
+                                    </div>`
+                                );
+                                var $lastAddedText = $("#searchsuggestions .animated-text").last();
+
+
+                                var trimmedText = $lastAddedText.text().trim();
+
+
+                                if (trimmedText.length <= 40) {
+
+                                    $lastAddedText.removeClass("animated-text");
+                                    $lastAddedText.closest(".text-container").removeClass("text-container");
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        let expanded = false;
+
+
+        let islike = false;
+        let isplaying = false;
+        let islyrics = false;
+        let repeat = 0;
+        let volume = "100";
+        // working player
+        const playerprogress = document.getElementById("playerprogress");
+        const song = document.getElementById("song");
+        const controllingicon = document.getElementById("playpause");
+
+        // song.addEventListener("loadeddata", () => {
+        //     playerprogress.max = Math.floor(song.duration);
+        //     document.getElementById("song_duration").innerText = `${Math.floor(audio.duration / 60)}:${String(Math.floor(audio.duration % 60)).padStart(2, '0')}`;
+        // });
+
+        function playpause() {
+            const playbtn = document.getElementById("playpause");
+            if (isplaying) {
+                playbtn.src = "{% static 'mainapp/player/play.svg' %}";
+                playbtn.setAttribute("title", "Play");
+                isplaying = false;
+                song.pause();
+
+            }
+            else {
+                playbtn.src = "{% static 'mainapp/player/pause.svg' %}";
+                playbtn.setAttribute("title", "Pause");
+                isplaying = true;
+                song.play();
+            }
+        }
+
+
+
+
+        function volbtn() {
+            const volume_slider = document.getElementById("volumeslider");
+            const volbtn = document.getElementById("volbtn");
+
+            if (volume_slider.value == "0") {
+                volume_slider.value = volume;
+                volumeManage();
+            }
+            else {
+                volume = volume_slider.value;
+                volbtn.src = "{% static 'mainapp/player/volmute.svg' %}";
+                volbtn.setAttribute("title", "Mute");
+                volume_slider.value = "0";
+                volumeManage();
+            }
+            song.volume = parseInt(volume_slider.value / 100);
+        }
+
+        function lyricsbtn() {
+            const lyricsbtn = document.getElementById("lyricsbtn");
+            if (islyrics) {
+                lyricsbtn.src = "{% static 'mainapp/player/lyrics.svg' %}";
+                lyricsbtn.setAttribute("title", "Lyrics");
+                islyrics = false;
+            }
+            else {
+                lyricsbtn.src = "{% static 'mainapp/player/nolyrics.svg' %}";
+                lyricsbtn.setAttribute("title", "Lyrics off");
+                islyrics = true;
+            }
+        }
+        function likebtn() {
+            const likebtn = document.getElementById("likebtn");
+            if (islike) {
+                likebtn.src = "{% static 'mainapp/player/playerlikesong.svg' %}";
+                likebtn.setAttribute("title", "Like Song");
+                islike = false;
+            }
+            else {
+                likebtn.src = "{% static 'mainapp/player/playerlikesongblue.svg' %}";
+                likebtn.setAttribute("title", "Dislike Song");
+                islike = true;
+            }
+        }
+        function changerepeat() {
+            const repeatelements = ["{% static 'mainapp/player/repeatoff.svg'%}", "{% static 'mainapp/player/repeatonce.svg' %}", "{% static 'mainapp/player/repeatall.svg' %}"];
+            const repbtn = document.getElementById("repeatingbtn");
+            if (repeat == 0) {
+                repbtn.setAttribute("src", repeatelements[1]);
+                repbtn.setAttribute("title", "Repeat once");
+                repeat = 1;
+                // song.loop = true;
+            }
+            else if (repeat == 1) {
+                repbtn.setAttribute("src", repeatelements[2]);
+                repbtn.setAttribute("title", "Repeat all");
+                repeat = 2;
+            }
+            else {
+                repbtn.setAttribute("src", repeatelements[0]);
+                repbtn.setAttribute("title", "Repeat off");
+                repeat = 0;
+                // song.loop = false;
+            }
+
+        }
+
+        function volumeManage() {
+            const volslider = document.getElementById("volumeslider");
+            const volbtn = document.getElementById("volbtn");
+            const slidervalue = parseInt(volslider.value);
+            if (slidervalue <= 0) {
+                volbtn.src = "{% static 'mainapp/player/volmute.svg' %}";
+                volbtn.setAttribute("title", "Unmute");
+            }
+            else if (slidervalue <= 33 && slidervalue > 0) {
+                volbtn.src = "{% static 'mainapp/player/volmin.svg' %}";
+            }
+            else if (slidervalue > 33 && slidervalue < 66) {
+                volbtn.src = "{% static 'mainapp/player/volmid.svg' %}";
+            }
+            else {
+                volbtn.src = "{% static 'mainapp/player/volmax.svg' %}";
+            }
+            song.volume = slidervalue / 100;
+        }
+
+        document.getElementById("volumeslider").addEventListener("input", volumeManage)
+
+        function sliderTools() {
+            const min = Math.floor(song.currentTime / 60);
+            const sec = Math.floor(song.currentTime % 60) < 10 ? "0" + Math.floor(song.currentTime % 60) : Math.floor(song.currentTime % 60);
+            playerprogress.value = song.currentTime;
+
+            document.getElementById("song_progress").innerText = `${min}:${sec}`;
+            if (song.ended) {
+                const playbtn = document.getElementById("playpause");
+                playbtn.src = "{% static 'mainapp/player/play.svg' %}";
+                playbtn.setAttribute("title", "Play");
+                isplaying = false;
+                if (repeat == 1 || repeat == 2) {
+                    // playpause();
+                    song.currentTime = 0;
+                    playpause();
+
+                }
+            }
+        }
+
+        setInterval(() => {
+
+            sliderTools();
+        }, 1000);
+
+        // console.log(song.readyState);
+        // if (song.readyState) {
+        //     setInterval(sliderTools, 1000);
+        // }
+
+
+
+        playerprogress.addEventListener("input", () => {
+
+
+            song.currentTime = playerprogress.value;
+
+            // Parse the slider value as a float
+            // const sliderValue = parseFloat(playerprogress.value);
+
+            // Log values for debugging
+            // console.log(`Current Time (before): ${song.currentTime}`);
+            // console.log(`Slider Value: ${sliderValue}`);
+
+            // Update song current time and log the new value
+            // song.currentTime = playerprogress.value.toString();
+            // console.log(`Current Time (after): ${song.currentTime}`);
+
+            // Format time display
+            const min = Math.floor(song.currentTime / 60);
+            const sec = Math.floor(song.currentTime % 60);
+            const formattedSec = sec < 10 ? `0${sec}` : sec;
+
+            // Update the display element
+            document.getElementById("song_progress").innerText = `${min}:${formattedSec}`;
+            // document.getElementById("song_progress").innerText = song.currentTime;
+            // const min = Math.floor(song.currentTime / 60);
+            // const sec = Math.floor(song.currentTime % 60) < 10 ? "0" + Math.floor(song.currentTime % 60) : Math.floor(song.currentTime % 60);
+            // document.getElementById("song_progress").innerText = `${min}:${sec}`;
+
+        });
+
+
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key == " " && document.activeElement != document.getElementById("searchcontent")) {
+                event.preventDefault();
+                playpause();
+            }
+            else if ((event.key == "m" || event.key == "M") && document.activeElement != document.getElementById("searchcontent")) {
+                event.preventDefault();
+                volbtn();
+            }
+            else if (event.key == "ArrowRight" && document.activeElement != document.getElementById("searchcontent")) {
+
+                event.preventDefault();
+                if (document.activeElement == document.getElementById("volumeslider") || document.activeElement == document.getElementById("volumebutton")) {
+                    const volslider = document.getElementById("volumeslider");
+                    volslider.value = parseInt(volslider.value) + 5;
+                    volumeManage();
+                    // volslider.value = (parseInt(volslider.value)+10).toString();
+                }
+                else {
+                    song.currentTime += 5;
+                    sliderTools();
+                }
+
+            }
+            else if (event.key == "ArrowLeft" && document.activeElement != document.getElementById("searchcontent")) {
+                event.preventDefault();
+                if (document.activeElement == document.getElementById("volumeslider") || document.activeElement == document.getElementById("volumebutton")) {
+                    const volslider = document.getElementById("volumeslider");
+                    volslider.value = parseInt(volslider.value) - 5;
+                    volumeManage();
+                    // volslider.value = (parseInt(volslider.value)+10).toString();
+                }
+                else {
+                    song.currentTime -= 5;
+                    sliderTools();
+                }
+
+            }
+
+
+        });
+    </script>
+    <script>
+        function loadSong(videoId, songname, author, thumbnail) {
+            // console.log(author);
+            if (isplaying) {
+                $("#player").addClass("animate-pulse");
+                playpause();
+            }
+            $("#player").removeClass("hidden");
+            $("#player-overlay").removeClass("hidden");
+
+            $.ajax({
+                url: '{% url "getSong" %}',
+                data: { 'query': videoId },
+                xhrFields: {
+                    responseType: 'blob' // This is crucial to handle the file as a blob
+                },
+
+                success: function (response) {
+
+                    $("#player").removeClass("animate-pulse");
+                    $("#player-overlay").addClass("hidden");
+                    $("#player-songname").empty();
+                    $("#player-author").empty();
+                    $("#song-img").empty();
+                    $("#player-songname").append(`${songname}`);
+                    $("#player-author").append(`${author}`);
+                    $("#song-img").append(`<img class="h-[55px] w-[55px]" src=${thumbnail} alt="">`);
+
+                    if (isplaying) {
+                        playpause();
+                    }
+                    var audio = $("#song")[0]
+                    var timestamp = new Date().getTime();
+                    var blob = new Blob([response], { type: 'audio/m4a' });
+                    var url = URL.createObjectURL(blob);
+                    // audio.src = "{% static 'mainapp/player/song.m4a' %}?t=" + timestamp;
+                    audio.src = url;
+                    audio.load();
+                    $(audio).on("canplay", function () {
+                        playerprogress.max = Math.floor(audio.duration);
+                        document.getElementById("song_duration").innerText = `${Math.floor(audio.duration / 60)}:${String(Math.floor(audio.duration % 60)).padStart(2, '0')}`;
+
+                    })
+                    playpause();
+                    // if (audio.readyState) {
+                    //     setInterval(sliderTools, 1000);
+                    // }
+
+
+
+                }
+            })
+        }
+    </script>
+    <script>
+        function makeResultHeading(title) {
+            $("#allelements1").remove();
+            $("#lchild").remove("bg-transparent");
+            $("#lchild").addClass("gradnav");
+            $("#allelements").empty();
+            $("#allelements").append(
+                `<div class="text-white poppins-regular flex w-[98%] text-[30px] mt-16 pt-4 text-sky-600 mb-2">
+                    Results for "${title}"
+                </div>
+                <hr class="my-2 mr-2 bg-white">
+                    
+                    `
+            );
+        }
+        function placeResultData(item) {
+            $("#allelements").append(`
+                        <div class="flex justify-between poppins-regular">
+                            <button class="flex space-x-5" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.author}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                                <div class="border">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white">
+                                    <div class="h-[30px] font-bold corey-font">
+                                        ${item.title}
+                                    </div>
+                                    <div class="h-[25px] w-[375px] font-semibold text-red-600">
+                                        ${item.author}
+                                    </div>
+                                </div>
+                            </button>
+                            <div class="mr-7 pt-3">
+                                <button onclick="likebtn()">
+                                    <div>
+                                        <img id="likebtn" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <hr class="my-2 mr-2 bg-white">`
+            );
+        }
+    </script>
+    <script>
+        $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+        $("#searchcontent").on("keydown", function (e) {
+            if (e.key == "Enter") {
+                $.ajax({
+                    url: '{% url "getSearch" %}',
+                    data: { 'query': e.target.value },
+
+
+                    success: function (response) {
+                        makeResultHeading(title = e.target.value);
+
+
+                        response.searchdata.forEach(item => {
+
+                            placeResultData(item);
+                        });
+
+
+                    }
+                })
+            }
+        })
+    </script>
+    <script>
+        function insertPlaylist(item) {
+            $("#griddiv").append(
+                `
+                    
+                        <button class="flex flex-col my-4 hover:scale-110" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.author}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                            <div class= "w-40 ">
+                                <img class="" src="${item.thumbnail}">
+                            </div>
+                            <div class="text-white">
+                                <div class="text-container w-[170px]">
+                                    <span class="animated-text">
+                                        ${item.title}
+                                    </span>
+                                </div>
+                                <div class="text-red-600 artist-text">${item.author}</div>
+                            </div>
+                        </button>
+                   
+                    `
+            );
+            var $lastAddedText = $("#griddiv .animated-text").last();
+
+
+            var trimmedText = $lastAddedText.text().trim();
+
+
+            if (trimmedText.length <= 20) {
+
+                $lastAddedText.removeClass("animated-text");
+                $lastAddedText.closest(".text-container").removeClass("text-container");
+            }
+            var $lastAddedArtistText = $("#griddiv .artist-text").last();
+            var trimmedArtistText = $lastAddedArtistText.text().trim();
+            if (trimmedArtistText.length <= 15) {
+                $lastAddedArtistText.removeClass("animated-text");
+                $lastAddedArtistText.closest(".text-container").removeClass("text-container");
+            }
+
+        }
+    </script>
+    <script>
+        function getPL(plId, pltitle) {
+            $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+            $.ajax({
+                url: '{% url "getPlaylist" %}',
+                data: { 'query': plId },
+                success: function (response) {
+                    $("#allelements1").remove();
+                    $("#lchild").remove("bg-transparent");
+                    $("#lchild").addClass("gradnav");
+                    $("#allelements").empty();
+                    $("#allelements").append(
+                        `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
+                            <div class="text-white poppins-regular">
+                                Results for 
+                            </div>
+                            <div class="text-sky-600 corey-font">
+                                ${pltitle}
+                            </div>
+    
+                        </div>
+                        
+                        `
+                    );
+
+                    $("#allelements").append(
+                        `
+                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-8">
+                            </div>
+                            `
+                    )
+                    response.pldata.forEach(item => {
+
+                        insertPlaylist(item);
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        function getAL(albumId, altitle) {
+            $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+            $.ajax({
+                url: '{% url "getAlbum" %}',
+                data: { 'query': albumId },
+                success: function (response) {
+                    $("#allelements1").remove();
+                    $("#lchild").remove("bg-transparent");
+                    $("#lchild").addClass("gradnav");
+                    $("#allelements").empty();
+                    $("#allelements").append(
+                        `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
+                            <div class="text-white poppins-regular">
+                                Results for 
+                            </div>
+                            <div class="text-sky-600 corey-font">
+                                ${altitle}
+                            </div>
+    
+                        </div>
+                        
+                        `
+                    );
+
+                    $("#allelements").append(
+                        `
+                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-8">
+                            </div>
+                            `
+                    )
+                    response.aldata.forEach(item => {
+
+                        insertPlaylist(item);
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        function createArtistHeadings() {
+            const heads = { 1: "Singles", 2: "Songs", 3: "Albums" }
+            Object.entries(heads).forEach(([k, v]) => {
+
+                $("#allelements").append(
+                    `
+                            <div class="text-white flex w-[98%] text-[30px] justify-between">
+                                <div class = "bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500  bg-clip-text text-transparent leading-normal">${v}</div>
+                                <div id="scrollnavbtn" class="flex">
+                                    <button class="hover:scale-110" onclick="horizontalscroll(true,'artistshead${k}')">
+                                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                                    </button>
+                                    <button class="hover:scale-110" onclick="horizontalscroll(false,'artistshead${k}')">
+                                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="artistshead${k}"
+                            class="scrollbar   sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%]  grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+                                
+                            </div>
+                                `
+                );
+            });
+        }
+    </script>
+    <script>
+        function getAR(artistId, artitle) {
+            $.ajax({
+                url: '{% url "getArtist" %}',
+                data: { 'query': artistId },
+                success: function (response) {
+
+                    $("#grad-control").removeClass("gradnav1");
+                    $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+                    $("#allelements1").remove();
+                    $("#lchild").remove("bg-transparent");
+                    $("#lchild").addClass("gradnav");
+                    $("#allelements").empty();
+                    $("#allelements").append(
+                        `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
+                            <div class="text-white poppins-regular">
+                                Results for 
+                            </div>
+                            <div class="text-sky-600 corey-font">
+                                ${artitle}
+                            </div>
+    
+                        </div>
+                        
+                        `
+                    );
+
+                    createArtistHeadings();
+
+                    response.ardata.singles.forEach(item => {
+                        $("#artistshead1").append(
+                            `
+                                <button class="hover:scale-110" browseId="${item.browseId}" onclick = "getAL(this.getAttribute('browseId'),'${item.title}')">
+                                <div class="h-40 w-40 flex justify-center">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1 text-container">
+                                    <span class="animated-text w-40">
+                                        ${item.title}
+                                    </span>
+                                </div>
+                                
+                            </button>`
+                        )
+                        var $lastAddedText = $("#artistshead1 .animated-text").last();
+
+
+                        var trimmedText = $lastAddedText.text().trim();
+
+
+                        if (trimmedText.length <= 20) {
+
+                            $lastAddedText.removeClass("animated-text");
+                            $lastAddedText.closest(".text-container").removeClass("text-container");
+                        }
+                    }
+                    )
+                    response.ardata.songs.forEach(item => {
+                        $("#artistshead2").append(
+                            `
+                                <button class="hover:scale-110" songId = "${item.videoId}" songname="${item.title}" songauthor="${artitle}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                                <div class="h-40 w-40 flex justify-center">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1 text-container">
+                                    <span class="animated-text w-40">
+                                        ${item.title}
+                                    </span>
+                                </div>
+                                
+                            </button>`
+                        )
+                        var $lastAddedText = $("#artistshead2 .animated-text").last();
+
+
+                        var trimmedText = $lastAddedText.text().trim();
+
+
+                        if (trimmedText.length <= 20) {
+
+                            $lastAddedText.removeClass("animated-text");
+                            $lastAddedText.closest(".text-container").removeClass("text-container");
+                        }
+                    }
+                    )
+                    response.ardata.albums.forEach(item => {
+                        $("#artistshead3").append(
+                            `
+                                <button class="hover:scale-110" browseId="${item.browseId}" onclick = "getAL(this.getAttribute('browseId'),'${item.title}')">
+                                <div class="h-40 w-40 flex justify-center">
+                                    <img src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white w-40 pt-1 text-container">
+                                    <span class="animated-text w-40">
+                                        ${item.title}
+                                    </span>
+                                </div>
+                                
+                            </button>`
+                        )
+                        var $lastAddedText = $("#artistshead3 .animated-text").last();
+
+
+                        var trimmedText = $lastAddedText.text().trim();
+
+
+                        if (trimmedText.length <= 20) {
+
+                            $lastAddedText.removeClass("animated-text");
+                            $lastAddedText.closest(".text-container").removeClass("text-container");
+                        }
+                    }
+                    )
+
+
+                }
+            });
+        }
+    </script>
+    <script>
+        function likeSong(params) {
+            
+        }
+    </script>
     {% block script %} {% endblock script %}
-   
+
 
 </body>
 

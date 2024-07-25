@@ -1,5 +1,6 @@
 function createribbon() {
-    const genres = {"New Releases":"bg-[#FF5A5A]", "Trending":"bg-[#FF75C5]", "Mood & Genres":"bg-[#8FFF7D]", "Top Artists":"bg-[#76DEFF]"};
+    const genres = {"New Releases":"bg-gradient-to-r from-[#7a2828] via-[#d29393] to-[#7a2828]", "Trending":"bg-gradient-to-r from-[#FF75C5] via-[#FFB6E0] to-[#FF75C5]", "Mood & Genres":"bg-gradient-to-r from-[#467b3d] via-[#b0f1a5] to-[#467b3d]", "Top Artists":"bg-gradient-to-r from-[#66DDEE] via-[#B3F5FF] to-[#66DDEE]"};
+
     const ribbox = document.getElementById("ribbonbox");
     const parser = new DOMParser();
     Object.entries(genres).forEach(([ele,k]) => {

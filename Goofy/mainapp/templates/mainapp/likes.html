@@ -1,0 +1,36 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+
+{% block title %}Likes{% endblock title %}
+{% block content %}
+<div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
+        
+    <div class="flex-col poppins-regular mt-16 ">
+        <div class="flex-col text-white w-[98%]">
+            <div class="text-[30px]">Liked Music</div>
+            <div class="text-[20px]">Your liked music will be displayed here</div>
+        </div>
+        <div class="text-white flex w-[98%] justify-between">
+            <div class="flex space-x-5">
+                <div class="text-[30px]">Your Likes</div>
+                <button class="text-[20px] font-bold pt-2 hover:text-gray-500 hover:scale-110">Show all</button>
+            </div>
+            <div id="scrollnavbtn" class="flex">
+                <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
+                    <div class="m-1"><img src="newassets/larrow.svg" alt=""></div>
+                </button>
+                <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv1')">
+                    <div class="m-1"><img src="newassets/rarrow.svg" alt=""></div>
+                </button>
+            </div>
+        </div>
+
+        <div id="parentscrolldiv1"
+            class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}

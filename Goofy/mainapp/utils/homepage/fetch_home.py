@@ -9,18 +9,15 @@ class Home_page:
         self.ytm = YTMusic()
         self.INchart = self.ytm.get_charts('IN')
 
-    def manage_names(self,name:str) ->str:
-        if len(name) > 20 :
-            return name[:15] + "..."
-        else : return name
+    
 
     async def fetch_thumbnail(self, session, item):
         url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={item['videoId']}"
         async with session.get(url) as response:
             thumbnail_url = (await response.json())['thumbnail_url']
             temp_data = {
-                'title': self.manage_names(item['title']),
-                'artist': self.manage_names(item['artists'][0]['name']),
+                'title': item['title'],
+                'artist': item['artists'][0]['name'],
                 'thumbnail': thumbnail_url,
                 'videoId': item['videoId']
             }
@@ -39,19 +36,20 @@ class Home_page:
             
             
             for con in i['contents'][:5]:
-                temp_dict = {'title':'','Id':'','artist':'','thumbnail':''}
+                temp_dict = {'title':'','artist':'','thumbnail':'',"Id":[]}
 
                 for pic in con['thumbnails']:
                     if pic['width'] > 120 and pic['height']>=226 :
                         try:
-                            temp_dict['artist']=self.manage_names(con['artists'][0]['name'] )
-                        except KeyError:
+                            temp_dict['artist']=con['artists'][0]['name'] 
+                        except Exception:
                             pass
-                        temp_dict['title'] = self.manage_names(con['title']) 
+                        temp_dict['title'] = con['title']
                         temp_dict['thumbnail'] = pic['url']
                         for key in con.keys():
                             if key in ['browseId','videoId','playlistId']:
-                                temp_dict['Id'] = con[key]
+                                temp_dict["Id"].append(key)
+                                temp_dict["Id"].append(con[key])
 
                         pile_data.append(temp_dict)
                         break
@@ -78,9 +76,9 @@ class Home_page:
         alb = self.ytm.search("latest albums",filter='albums',limit=10)
         pile_data = []
         for item in alb:
-            item['artists'][0]['name'] = self.manage_names(item['artists'][0]['name']) 
+            item['artists'][0]['name'] = item['artists'][0]['name']
                 
-            item['title'] = self.manage_names(item['title'])       
+            item['title'] = item['title']      
             temp_dict = {
                  'title': item['title'],
                  'artist': item['artists'][0]['name'],
@@ -95,8 +93,8 @@ class Home_page:
         pile_data = []
         for item in tsongs:
             if item['artists']:
-                item['artists'][0]['name'] = self.manage_names(item['artists'][0]['name']) 
-                item['title'] = self.manage_names(item['title'])  
+                item['artists'][0]['name'] = item['artists'][0]['name']
+                item['title'] = item['title']  
                 temp_dict = {
                  'title': item['title'],
                  'artist': item['artists'][0]['name'],

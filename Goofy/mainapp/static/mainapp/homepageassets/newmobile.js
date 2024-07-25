@@ -1,6 +1,4 @@
-let expanded = false;
 
-console.log(2333);
 
 function lnav() {
     document.getElementById("leftnav").classList.toggle("hidden");
@@ -13,12 +11,14 @@ function lnav() {
     if (expanded) {
         if (window.innerWidth >= 768) {
             document.getElementById("allelements").classList.remove("md:ml-[280px]");
+            document.getElementById("allelements1").classList.remove("md:ml-[280px]");
             document.getElementById("searchbox").classList.remove("md:ml-[280px]");
         }
         else
         {
 
             document.getElementById("allelements").classList.remove("blur-sm");
+            document.getElementById("allelements1").classList.remove("blur-sm");
             document.getElementById("searchbox").classList.remove("blur-sm");
             document.getElementById("searchbox").classList.remove("sm:ml-[240px]");
             document.getElementById("logo").classList.remove("blur-sm");
@@ -43,12 +43,14 @@ function lnav() {
     else {
         if (window.innerWidth >= 768) {
             document.getElementById("allelements").classList.add("md:ml-[280px]");
+            document.getElementById("allelements1").classList.add("md:ml-[280px]");
             document.getElementById("searchbox").classList.add("md:ml-[280px]");
         }
         else
         {
 
             document.getElementById("allelements").classList.add("blur-sm");
+            document.getElementById("allelements1").classList.add("blur-sm");
             document.getElementById("searchbox").classList.add("blur-sm");
             document.getElementById("searchbox").classList.add("sm:ml-[240px]");
             document.getElementById("logo").classList.add("blur-sm");
@@ -120,7 +122,7 @@ function searchboxappear()
 
 function closesearch() {
     document.getElementById("logo").classList.remove("hidden");
-    document.getElementById("ham").classList.remove("hidden");
+    // document.getElementById("ham").classList.remove("hidden");
     document.getElementById("searchbtn").classList.remove("hidden");
     document.getElementById("searchbox").classList.add("hidden");
     document.getElementById("searchbox").classList.replace("w-[90%]","w-[70%]");
@@ -129,7 +131,8 @@ function closesearch() {
 }
 
 function clickmanage(event) {
-    if(!document.getElementById("searchcontent").contains(event.target)&& !document.getElementById("searchbtn").contains(event.target) &&  !document.getElementById("searchpic").contains(event.target) )
+   
+    if(!document.getElementById("searchcontent").contains(event.target) && !document.getElementById("searchbtn").contains(event.target) &&  !document.getElementById("searchpic").contains(event.target) )
         {
         
             closesearch();
@@ -146,7 +149,6 @@ document.getElementById("searchcontent").addEventListener("input", crossappear);
 document.body.addEventListener("click",clickmanage);
 
 document.getElementById("explorebox").addEventListener("mouseenter", () => {
-    console.log('hello');
     document.getElementById("exploreimg").classList.add("animate-spin");
 });
 document.getElementById("explorebox").addEventListener("mouseleave", () => {

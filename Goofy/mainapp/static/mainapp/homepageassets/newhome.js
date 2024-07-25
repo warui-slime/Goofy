@@ -123,8 +123,8 @@ function handleresize()
 }
 
 
-handleresize();
-window.addEventListener("resize",handleresize);
+// handleresize();
+// window.addEventListener("resize",handleresize);
 
 // heading1material();
 createribbon();

@@ -1,5 +1,14 @@
 from mainapp.utils.homepage.fetch_home import Home_page
 from mainapp.utils.explorepage.fetch_explore import Explore_page
+from mainapp.utils.searches import suggestions
+from mainapp.utils.musicfetch.fetchmusic import Downloadmusic
+from mainapp.utils.searches.fetchsearch import FetchSearch
+from mainapp.utils.mix.fetchPl import Additionalcontent
+from mainapp.utils.mix.fetchalbum import Fetchalbum
+from mainapp.utils.mix.fetchartist import Fetchartist
+from mainapp.utils.mix.fetchmoods import Fetchmoods
+
+
 import asyncio
 
 class Goofyapi():
@@ -40,3 +49,28 @@ class Goofyapi():
     def get_homepage_sync(self):
         return asyncio.run(self.get_homepage())
     
+    def get_suggestions(self,query):
+        return asyncio.run(suggestions.main(query))
+    
+    def getMusic(self,videoId):
+        Downloadmusic.download(videoId)
+        return {}
+    
+    def getSearch(self,query):
+        ins = FetchSearch()
+        return {'searchdata':ins.getSongs(query)}
+    def getPlaylist(self,query):
+        ins = Additionalcontent()
+        
+        return {'pldata':ins.getPlaylist(query)}
+    def getAlbum(self,query):
+        ins = Fetchalbum()
+        return {'aldata':ins.getAlbum(query)}
+    
+    def getArtist(self,query):
+        ins = Fetchartist()
+        return {'ardata':ins.getArtist(query)}
+    
+    def getMoodpl(self,query):
+        ins = Fetchmoods()
+        return {'mooddata':ins.getMoodPl(query)}

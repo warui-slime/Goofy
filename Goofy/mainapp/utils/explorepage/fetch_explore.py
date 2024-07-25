@@ -7,18 +7,15 @@ class Explore_page:
     def __init__(self) -> None:
         self.ytm = YTMusic()
 
-    def manage_names(self,name:str,length:int=20) ->str:
-        if len(name) > length :
-            return name[:length-5] + "..."
-        else : return name
+   
 
     async def get_heading1(self):
         nsongs = self.ytm.search('latest songs',filter='songs',limit=10)
         pile_data = []
         for item in nsongs:
             if item['artists']:
-                item['artists'][0]['name'] = self.manage_names(item['artists'][0]['name']) 
-                item['title'] = self.manage_names(item['title'])  
+                item['artists'][0]['name'] = item['artists'][0]['name'] 
+                item['title'] = item['title']
                 temp_dict = {
                  'title': item['title'],
                  'artist': item['artists'][0]['name'],
@@ -38,7 +35,7 @@ class Explore_page:
             for pic in item['thumbnails']:
                 if pic['width'] > 120:
                     temp_dict = {
-                    'title': self.manage_names(item['title'],40),
+                    'title': item['title'],
                     'thumbnail': pic['url'],
                     'browseId' : item['browseId']
                     }
@@ -48,14 +45,15 @@ class Explore_page:
 
 
     async def get_heading3(self):
-        mood_colors = ["#8FFF7D","#FFC061","#FF5A5A","#A57BFF","#76DEFF","#FF75C5","#FF75C5","#8FFF7D","#FFC061","#FF5A5A","#A57BFF","#76DEFF","#76DEFF","#FF75C5","#8FFF7D","#FFC061","#FF5A5A","#A57BFF","#A57BFF","#76DEFF","#FF75C5","#8FFF7D","#FFC061","#FF5A5A","#FF5A5A","#A57BFF","#76DEFF","#FF75C5","#8FFF7D","#FFC061","#FFC061","#FF5A5A","#A57BFF","#76DEFF","#FF75C5","#8FFF7D"]
-        random.shuffle(mood_colors)
+        mood_colors = [ "bg-gradient-to-r from-[#7a2828] via-[#d29393] to-[#7a2828]", "bg-gradient-to-r from-[#FF75C5] via-[#FFB6E0] to-[#FF75C5]", "bg-gradient-to-r from-[#467b3d] via-[#b0f1a5] to-[#467b3d]", "bg-gradient-to-r from-[#66DDEE] via-[#B3F5FF] to-[#66DDEE]"]
+
+       
         moods = self.ytm.get_mood_categories()
         pile_data = []
         pile_data.extend(moods['Moods & moments'])
         pile_data.extend(random.sample(moods['Genres'],26))
         for i in range(36):
-            pile_data[i]['mcolor'] = mood_colors[i]
+            pile_data[i]['mcolor'] = mood_colors[random.randint(0,3)]
         return pile_data
     
     async def get_heading4(self):
@@ -63,9 +61,9 @@ class Explore_page:
         pile_data =[]
         pile_data = []
         for item in talb:
-            item['artists'][0]['name'] = self.manage_names(item['artists'][0]['name']) 
+            item['artists'][0]['name'] = item['artists'][0]['name'] 
                 
-            item['title'] = self.manage_names(item['title'])       
+            item['title'] = item['title']       
             temp_dict = {
                  'title': item['title'],
                  'artist': item['artists'][0]['name'],
