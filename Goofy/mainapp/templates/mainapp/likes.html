@@ -7,28 +7,47 @@
 <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
         
     <div class="flex-col poppins-regular mt-16 ">
+        {% if likedata %}
+        {% else %}
         <div class="flex-col text-white w-[98%]">
             <div class="text-[30px]">Liked Music</div>
             <div class="text-[20px]">Your liked music will be displayed here</div>
         </div>
+        {% endif %}
         <div class="text-white flex w-[98%] justify-between">
             <div class="flex space-x-5">
                 <div class="text-[30px]">Your Likes</div>
                 <button class="text-[20px] font-bold pt-2 hover:text-gray-500 hover:scale-110">Show all</button>
             </div>
             <div id="scrollnavbtn" class="flex">
-                <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
-                    <div class="m-1"><img src="newassets/larrow.svg" alt=""></div>
+                <button class="hover:scale-110" onclick="horizontalscroll(true,'likegrid')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
                 </button>
-                <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv1')">
-                    <div class="m-1"><img src="newassets/rarrow.svg" alt=""></div>
+                <button class="hover:scale-110" onclick="horizontalscroll(false,'likegrid')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
                 </button>
             </div>
         </div>
 
-        <div id="parentscrolldiv1"
-            class=" sm:scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
-
+        <div id="likegrid"
+            class="scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 pl-3 scroll-smooth space-x-5 ">
+            {% for item in likedata %}
+            <button class="hover:scale-110" >
+                <div class="w-40 ">
+                    <img src="{{item.thumbnail}}" alt="">
+                </div>
+                <div class="text-white w-40 pt-1 text-container">
+                    <span class="text-white animated-text w-40 title-text">
+                        {{item.title}}
+                    </span>
+                </div>
+                <div class="text-white w-40 h-[25px] text-container">
+                    <span class="text-white w-40 h-[25px] animated-text artist-text">
+                        {{item.author}}
+                    </span>
+                </div>
+            </button>
+            {% endfor %}
         </div>
         
     </div>

@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>{% block title %} {% endblock title %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,11 +48,11 @@
                             </div>
                             <div id="explore" class="text-center pt-0.5 sm:hidden">Explore</div>
                         </a>
-                        <button id="librarybox" class=" hover:bg-[#5398C9]" onclick="location.href = 'library.html'">
+                        <a id="librarybox" class=" hover:bg-[#5398C9]" href="{% url 'library' %}">
                             <div title="Library"><img src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
                             </div>
                             <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
-                        </button>
+                        </a>
                         <a id="likedsongsbox" class=" hover:bg-[#5398C9]" href="{% url 'mylikes' %}">
                             <div title="My Likes"><img id="likedsongsimg"
                                     src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
@@ -161,7 +162,7 @@
                             <img src="{% static 'mainapp/player/shuffle.svg' %}" alt="">
                         </div>
                     </button>
-                    <button>
+                    <button onclick="playprev()">
                         <div class="pt-[5px]">
                             <img src="{% static 'mainapp/player/playprev.svg' %}" alt="">
                         </div>
@@ -171,7 +172,7 @@
                             <img id="playpause" src="{% static 'mainapp/player/play.svg' %}" alt="">
                         </div>
                     </button>
-                    <button>
+                    <button onclick="playnext()">
                         <div class="pt-[5px]">
                             <img src="{% static 'mainapp/player/playnext.svg' %}" alt="">
                         </div>
@@ -204,10 +205,10 @@
                             <img id="lyricsbtn" src="{% static 'mainapp/player/lyrics.svg' %}" alt="">
                         </div>
                     </button>
-                    <button onclick="likebtn()">
-                        <div>
-                            <img id="likebtn" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
-                        </div>
+                    <button id="player-likebtn" class="likebtn" onclick="likesong(this)">
+
+                        <img class="likeimg" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
+
                     </button>
                     <div class="flex space-x-3">
                         <button id="volumebutton" onclick="volbtn()">
@@ -339,9 +340,9 @@
         });
     </script>
     <script>
+        let alltracks = [];
+        let curr_song_index = 0;
         let expanded = false;
-
-
         let islike = false;
         let isplaying = false;
         let islyrics = false;
@@ -375,7 +376,50 @@
         }
 
 
+        function changesong() {
 
+            song_data = alltracks[curr_song_index]
+            $("#player-likebtn").attr("songId", song_data.songId);
+            $("#player-songname").empty();
+            $("#player-author").empty();
+            $("#song-img").empty();
+            $("#player-songname").append(`${song_data.songname}`);
+            $("#player-author").append(`${song_data.author}`);
+            $("#song-img").append(`<img class="h-[55px] w-[55px]" src=${song_data.thumbnail} alt="">`);
+            if (isplaying) {
+                playpause();
+            }
+            var audio = $("#song")[0]
+            audio.src = song_data.blob;
+            audio.load();
+
+            $(audio).off("canplay");
+            $(audio).on("canplay", function () {
+                playerprogress.max = Math.floor(audio.duration);
+                document.getElementById("song_duration").innerText = `${Math.floor(audio.duration / 60)}:${String(Math.floor(audio.duration % 60)).padStart(2, '0')}`;
+                playpause();
+            });
+            showlikes();
+        }
+        function playnext() {
+            if (alltracks.length - 1 == curr_song_index) {
+                return 0;
+            }
+            curr_song_index += 1;
+            changesong();
+
+
+
+        }
+
+        function playprev() {
+            if (curr_song_index == 0) {
+                return 0;
+            }
+            curr_song_index -= 1;
+            changesong();
+
+        }
 
         function volbtn() {
             const volume_slider = document.getElementById("volumeslider");
@@ -483,6 +527,9 @@
                     playpause();
 
                 }
+                else {
+                    playnext();
+                }
             }
         }
 
@@ -491,11 +538,6 @@
             sliderTools();
         }, 1000);
 
-        // console.log(song.readyState);
-        // if (song.readyState) {
-        //     setInterval(sliderTools, 1000);
-        // }
-
 
 
         playerprogress.addEventListener("input", () => {
@@ -503,43 +545,28 @@
 
             song.currentTime = playerprogress.value;
 
-            // Parse the slider value as a float
-            // const sliderValue = parseFloat(playerprogress.value);
-
-            // Log values for debugging
-            // console.log(`Current Time (before): ${song.currentTime}`);
-            // console.log(`Slider Value: ${sliderValue}`);
-
-            // Update song current time and log the new value
-            // song.currentTime = playerprogress.value.toString();
-            // console.log(`Current Time (after): ${song.currentTime}`);
-
-            // Format time display
             const min = Math.floor(song.currentTime / 60);
             const sec = Math.floor(song.currentTime % 60);
             const formattedSec = sec < 10 ? `0${sec}` : sec;
 
-            // Update the display element
+
             document.getElementById("song_progress").innerText = `${min}:${formattedSec}`;
-            // document.getElementById("song_progress").innerText = song.currentTime;
-            // const min = Math.floor(song.currentTime / 60);
-            // const sec = Math.floor(song.currentTime % 60) < 10 ? "0" + Math.floor(song.currentTime % 60) : Math.floor(song.currentTime % 60);
-            // document.getElementById("song_progress").innerText = `${min}:${sec}`;
+
 
         });
 
 
 
         document.addEventListener("keydown", function (event) {
-            if (event.key == " " && document.activeElement != document.getElementById("searchcontent")) {
+            if (event.key == " " && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
                 event.preventDefault();
                 playpause();
             }
-            else if ((event.key == "m" || event.key == "M") && document.activeElement != document.getElementById("searchcontent")) {
+            else if ((event.key == "m" || event.key == "M") && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
                 event.preventDefault();
                 volbtn();
             }
-            else if (event.key == "ArrowRight" && document.activeElement != document.getElementById("searchcontent")) {
+            else if (event.key == "ArrowRight" && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
 
                 event.preventDefault();
                 if (document.activeElement == document.getElementById("volumeslider") || document.activeElement == document.getElementById("volumebutton")) {
@@ -554,7 +581,7 @@
                 }
 
             }
-            else if (event.key == "ArrowLeft" && document.activeElement != document.getElementById("searchcontent")) {
+            else if (event.key == "ArrowLeft" && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
                 event.preventDefault();
                 if (document.activeElement == document.getElementById("volumeslider") || document.activeElement == document.getElementById("volumebutton")) {
                     const volslider = document.getElementById("volumeslider");
@@ -573,18 +600,28 @@
         });
     </script>
     <script>
+
         function loadSong(videoId, songname, author, thumbnail) {
-            // console.log(author);
+
             if (isplaying) {
-                $("#player").addClass("animate-pulse");
                 playpause();
             }
+
+            $("#player-likebtn").attr("songId", videoId);
+            $("#player").addClass("animate-pulse");
             $("#player").removeClass("hidden");
             $("#player-overlay").removeClass("hidden");
 
+            $("#player-songname").empty();
+            $("#player-author").empty();
+            $("#song-img").empty();
+            $("#player-songname").append(`${songname}`);
+            $("#player-author").append(`${author}`);
+            $("#song-img").append(`<img class="h-[55px] w-[55px]" src=${thumbnail} alt="">`);
+
             $.ajax({
                 url: '{% url "getSong" %}',
-                data: { 'query': videoId },
+                data: { 'query': [videoId] },
                 xhrFields: {
                     responseType: 'blob' // This is crucial to handle the file as a blob
                 },
@@ -593,21 +630,20 @@
 
                     $("#player").removeClass("animate-pulse");
                     $("#player-overlay").addClass("hidden");
-                    $("#player-songname").empty();
-                    $("#player-author").empty();
-                    $("#song-img").empty();
-                    $("#player-songname").append(`${songname}`);
-                    $("#player-author").append(`${author}`);
-                    $("#song-img").append(`<img class="h-[55px] w-[55px]" src=${thumbnail} alt="">`);
+
+
+
 
                     if (isplaying) {
                         playpause();
                     }
+
                     var audio = $("#song")[0]
-                    var timestamp = new Date().getTime();
+                    // var timestamp = new Date().getTime();
                     var blob = new Blob([response], { type: 'audio/m4a' });
                     var url = URL.createObjectURL(blob);
                     // audio.src = "{% static 'mainapp/player/song.m4a' %}?t=" + timestamp;
+                    alltracks.push({ "songId": videoId, "songname": songname, "author": author, "thumbnail": thumbnail, "blob": url })
                     audio.src = url;
                     audio.load();
                     $(audio).on("canplay", function () {
@@ -620,10 +656,34 @@
                     //     setInterval(sliderTools, 1000);
                     // }
 
+                    $.ajax({
+                        url: '{% url "getRelated" %}',
+                        data: { 'query': videoId },
+                        success: function (response) {
+                            response.related.forEach(s => {
+                                $.ajax({
+                                    url: '{% url "getmusicblob" %}',
+                                    data: { 'query': s.videoId },
+                                    xhrFields: {
+                                        responseType: 'blob' // This is crucial to handle the file as a blob
+                                    },
 
+                                    success: function (response2) {
+
+                                        var blob = new Blob([response2], { type: 'audio/m4a' });
+                                        var url = URL.createObjectURL(blob);
+
+                                        alltracks.push({ "songId": s.videoId, "songname": s.title, "author": s.author, "thumbnail": s.thumbnail, "blob": url });
+                                    }
+                                });
+                            })
+                        }
+
+                    });
 
                 }
             })
+            showlikes();
         }
     </script>
     <script>
@@ -643,34 +703,45 @@
         }
         function placeResultData(item) {
             $("#allelements").append(`
-                        <div class="flex justify-between poppins-regular">
-                            <button class="flex space-x-5" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.author}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
-                                <div class="border">
-                                    <img src="${item.thumbnail}" alt="">
-                                </div>
-                                <div class="text-white">
-                                    <div class="h-[30px] font-bold corey-font">
-                                        ${item.title}
-                                    </div>
-                                    <div class="h-[25px] w-[375px] font-semibold text-red-600">
-                                        ${item.author}
-                                    </div>
-                                </div>
-                            </button>
-                            <div class="mr-7 pt-3">
-                                <button onclick="likebtn()">
-                                    <div>
-                                        <img id="likebtn" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                        <hr class="my-2 mr-2 bg-white">`
-            );
+    <div class="flex justify-between poppins-regular">
+        <button class="flex space-x-5" songId="${item.videoId}" songname="${item.title}" songauthor="${item.author}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'), this.getAttribute('songname'), this.getAttribute('songauthor'), this.getAttribute('thumbnail'))">
+            <div class="border">
+                <img src="${item.thumbnail}" alt="">
+            </div>
+            <div class="text-white">
+                <div class="h-[30px] font-bold corey-font">
+                    ${item.title}
+                </div>
+                <div class="h-[25px] w-[375px] font-semibold text-red-600">
+                    ${item.author}
+                </div>
+            </div>
+        </button>
+        <div class="mr-7 pt-3 flex items-center justify-center space-x-3">
+            <!-- Like Button -->
+            <button class="likebtn pr-4" songId="${item.videoId}" onclick="likesong(this)">
+                <img class="likeimg" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
+            </button>
+            <!-- Add to Playlist Dropdown -->
+            <div class="relative">
+                <button class="playlist-btn flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-600" onclick="toggleDropdown(this)">
+                    <img class="playlist-icon" src="{% static 'mainapp/player/add-to-play.svg' %}" alt="Add to Playlist">
+                </button>
+                <div class="playlist-dropdown hidden absolute right-0 mt-2 w-48 bg-gray-800 text-white border border-gray-700 rounded-lg shadow-lg z-10">
+                    <div class="px-4 py-2 border-b border-gray-700 text-center">Add to</div>
+                    <!-- Example playlists, dynamically populate this based on user's playlists -->
+                    <button class="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-700" onclick="addToPlaylist('${item.videoId}', 'Playlist 1')">Playlist 1</button>
+                    <button class="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-700" onclick="addToPlaylist('${item.videoId}', 'Playlist 2')">Playlist 2</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-2 mr-2 bg-white">
+`);
         }
     </script>
     <script>
-        $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+
         $("#searchcontent").on("keydown", function (e) {
             if (e.key == "Enter") {
                 $.ajax({
@@ -679,6 +750,7 @@
 
 
                     success: function (response) {
+                        $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
                         makeResultHeading(title = e.target.value);
 
 
@@ -686,6 +758,7 @@
 
                             placeResultData(item);
                         });
+                        showlikes();
 
 
                     }
@@ -959,8 +1032,76 @@
         }
     </script>
     <script>
-        function likeSong(params) {
-            
+        function getCSRFToken() {
+            return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        }
+    </script>
+    <script>
+        function likesong(btn) {
+            const img = btn.querySelector('.likeimg');
+
+            console.log(btn.getAttribute('songId'));
+            const isLiked = img.getAttribute('src') === "{% static 'mainapp/player/playerlikesongblue.svg' %}";
+
+            let url;
+            if (isLiked) {
+                url = '{% url "unlike_song" %}';
+            }
+            else {
+                url = '{% url "like_song" %}';
+            }
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    'query': btn.getAttribute('songId'),
+                    'csrfmiddlewaretoken': getCSRFToken()
+                },
+                success: function (response) {
+                    img.setAttribute('src', isLiked ? "{% static 'mainapp/player/playerlikesong.svg' %}" : "{% static 'mainapp/player/playerlikesongblue.svg' %}");
+                }
+
+
+            });
+
+        }
+
+
+
+    </script>
+    <script>
+
+        function showlikes() {
+            $.ajax({
+                url: '{% url "getlikedsongs" %}',
+                type: "GET",
+
+                success: function (response) {
+                    let likedSongs = response.likedsongs;
+
+                    let buttons = document.querySelectorAll('.likebtn');
+
+                    buttons.forEach(button => {
+
+                        if (likedSongs.includes(button.getAttribute("songId"))) {
+                            button.querySelector(".likeimg").src = "{% static 'mainapp/player/playerlikesongblue.svg' %}";
+                        }
+                        else {
+                            button.querySelector(".likeimg").src = "{% static 'mainapp/player/playerlikesong.svg' %}";
+                        }
+                    });
+                }
+
+
+            });
+        }
+        showlikes();
+    </script>
+    <script>
+        function toggleDropdown(button) {
+            const dropdown = button.nextElementSibling;
+            dropdown.classList.toggle('hidden');
         }
     </script>
     {% block script %} {% endblock script %}

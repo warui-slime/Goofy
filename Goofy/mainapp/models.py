@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 class LikedSong(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,3 +15,16 @@ class LikedSong(models.Model):
 
     def __str__(self):
         return f"{self.user.username} likes song {self.song_id}"
+
+
+class Playlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    playlist_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    song_ids = models.JSONField(default=list)  
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

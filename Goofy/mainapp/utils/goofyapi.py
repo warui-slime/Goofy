@@ -7,6 +7,8 @@ from mainapp.utils.mix.fetchPl import Additionalcontent
 from mainapp.utils.mix.fetchalbum import Fetchalbum
 from mainapp.utils.mix.fetchartist import Fetchartist
 from mainapp.utils.mix.fetchmoods import Fetchmoods
+from mainapp.utils.mix.songdetails import FetchMusicDetails
+from mainapp.utils.mix.fetchrelated import Relatedcontent
 
 
 import asyncio
@@ -52,8 +54,8 @@ class Goofyapi():
     def get_suggestions(self,query):
         return asyncio.run(suggestions.main(query))
     
-    def getMusic(self,videoId):
-        Downloadmusic.download(videoId)
+    def getMusic(self,videoIds):
+        Downloadmusic.download(videoIds)
         return {}
     
     def getSearch(self,query):
@@ -74,3 +76,11 @@ class Goofyapi():
     def getMoodpl(self,query):
         ins = Fetchmoods()
         return {'mooddata':ins.getMoodPl(query)}
+
+    def getSongdetails(self,songIds):
+        ins = FetchMusicDetails()
+        return {'likedata':asyncio.run(ins.get_song_details(songIds))}
+    
+    def getRelated(self,query):
+        ins = Relatedcontent()
+        return {'related' :ins.getRelated(query)}
