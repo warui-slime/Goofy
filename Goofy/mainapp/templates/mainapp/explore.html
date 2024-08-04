@@ -91,9 +91,17 @@
 <script>
     $("#exploreimg").attr("src", "{% static 'mainapp/homepageassets/explore1.svg' %}");
     $("#homeimg").attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
+    $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#likedsongsbox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#profilebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#lchild').removeClass("bg-transparent");
+    $('#lchild').addClass("gradnav");
+
 </script>
 <script>
-    $("#grad-control").addClass("gradnav1");
+    // $("#grad-control").addClass("gradnav1");
     $("#grad-control").append(`
         <div id="allelements1" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
         <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-2 mt-20">
@@ -210,8 +218,8 @@
                 response.heading3.forEach(function (item) {
                     $('#h3').append(
                         `
-                            <button moodplID = '${item.params}' class="${item.mcolor} mr-2 text-black text-lg font-semibold border-white border-[3px] rounded-lg hover:shadow-lg hover:shadow-white hover:scale-110 justify-stretch min-w-full" onclick = "getMood('${item.params}','${item.title}')">
-                                <div class="px-5 py-1 text-sm">${item.title}</div>
+                            <button moodplID = '${item.params}' class="${item.mcolor} bg-[#373737] border-l-8 mr-2 text-lg font-semibold border-[1px] rounded-lg hover:shadow-md hover:shadow-white hover:scale-110 justify-stretch min-w-full" onclick = "getMood('${item.params}','${item.title}')">
+                                <div class=" py-2 text-sm">${item.title}</div>
                             </button>
                         `
                     );

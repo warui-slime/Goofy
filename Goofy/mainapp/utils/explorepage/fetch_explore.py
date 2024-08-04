@@ -45,15 +45,20 @@ class Explore_page:
 
 
     async def get_heading3(self):
-        mood_colors = [ "bg-gradient-to-r from-[#7a2828] via-[#d29393] to-[#7a2828]", "bg-gradient-to-r from-[#FF75C5] via-[#FFB6E0] to-[#FF75C5]", "bg-gradient-to-r from-[#467b3d] via-[#b0f1a5] to-[#467b3d]", "bg-gradient-to-r from-[#66DDEE] via-[#B3F5FF] to-[#66DDEE]"]
+        mood_colors = [ "border-l-[#8FFF7D] text-[#8FFF7D] hover:shadow-[#8FFF7D] border-[#8FFF7D]", "border-l-[#FFC061] text-[#FFC061] hover:shadow-[#FFC061] border-[#FFC061]", "border-l-[#FF5A5A] text-[#FF5A5A] hover:shadow-[#FF5A5A] border-[#FF5A5A]", "border-l-[#A57BFF] text-[#A57BFF] hover:shadow-[#A57BFF] border-[#A57BFF]","border-l-[#76DEFF] text-[#76DEFF] hover:shadow-[#76DEFF] border-[#76DEFF]","border-l-[#FF75C5] text-[#FF75C5] hover:shadow-[#FF75C5] border-[#FF75C5]"]
 
        
         moods = self.ytm.get_mood_categories()
         pile_data = []
         pile_data.extend(moods['Moods & moments'])
         pile_data.extend(random.sample(moods['Genres'],26))
-        for i in range(36):
-            pile_data[i]['mcolor'] = mood_colors[random.randint(0,3)]
+        num_colors = len(mood_colors)
+        num_columns = 6  # Adjust this based on your actual layout
+
+        for i in range(len(pile_data)):
+            # Calculate the diagonal index for the current item
+            diagonal_index = (i // num_columns - i % num_columns) % num_colors
+            pile_data[i]['mcolor'] = mood_colors[diagonal_index]
         return pile_data
     
     async def get_heading4(self):

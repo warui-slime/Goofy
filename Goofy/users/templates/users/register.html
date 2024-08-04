@@ -1,5 +1,5 @@
 {% load static %}
-{% load socialaccount %} 
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,88 +9,96 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="{% static 'users/style.css' %}">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <title>Goofy - SignUp</title>
-  
+
 </head>
 
 <body>
-  <div class="w-full flex flex-col items-center h-screen">
-    <div class="mt-[2%] faster-one text-[#FAFF00]">GOOFY</div>
-    <form method="post" class="mt-[3%] space-y-[7%] flex flex-col h-[50%] w-[30%] min-w-[400px] items-center">
-      {% csrf_token %}
-      <div class="text-white text-[150%] font-bold inter">Create your account</div>
-      
-      <div class="flex flex-col h-[55%] w-[70%]">
-        <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}" required
-          class="h-[25%] max-h-[45px] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
-        {% if form.username.errors %}
+  <div class="bg-[#1e1e1e] w-full flex flex-col items-center h-screen pt-10">
+    <div class="bg-[#121212] h-[90%] w-[30%] bg-blur flex-col items-center justify-center rounded-3xl">
+
+      <div class="mt-2 faster-one bg-[#1D88E6] bg-clip-text text-transparent pl-[22%]">GOOFY</div>
+      <form method="post" class="mt-4 flex flex-col h-[50%] w-[30%] min-w-[400px] items-center pl-[10%]">
+        {% csrf_token %}
+        <div class="text-white text-[150%] font-bold inter">Create your account</div>
+
+        <div class="mt-4 flex flex-col h-[55%] w-[70%]">
+          <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}"
+            required
+            class="h-[60px] bg-white bg-opacity-50 rounded-[25px] shadow border border-[#1d88e6] placeholder:text-white interlight px-2 placeholder:opacity-50">
+          {% if form.username.errors %}
           <div class="hidden username-errors">
             {% for error in form.username.errors %}
-              <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
           </div>
-        {% endif %}
+          {% endif %}
 
-        <input type="email" name="email" placeholder="Email" value="{{ form.email.value|default:'' }}" required
-          class="h-[25%] max-h-[45px] mt-[4%] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
-        {% if form.email.errors %}
+          <input type="email" name="email" placeholder="Email" value="{{ form.email.value|default:'' }}" required
+            class="h-[60px] mt-2 bg-white bg-opacity-50 rounded-[25px] shadow border border-[#1d88e6] placeholder:text-white interlight px-2 placeholder:opacity-50">
+          {% if form.email.errors %}
           <div class="hidden email-errors">
             {% for error in form.email.errors %}
-              <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
           </div>
-        {% endif %}
+          {% endif %}
 
-        <input type="password" name="password1" placeholder="Password" required
-          class="h-[25%] max-h-[45px] mt-[4%] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
-        {% if form.password1.errors %}
+          <input type="password" name="password1" placeholder="Password" required
+            class="h-[60px] mt-2 bg-white bg-opacity-50 rounded-[25px] shadow border border-[#1d88e6] placeholder:text-white interlight px-2 placeholder:opacity-50">
+          {% if form.password1.errors %}
           <div class="hidden password1-errors">
             {% for error in form.password1.errors %}
-              <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
           </div>
-        {% endif %}
+          {% endif %}
 
-        <input type="password" name="password2" placeholder="Confirm Password" required
-          class="h-[25%] max-h-[45px] mt-[4%] bg-white bg-opacity-30 rounded-[25px] shadow border border-black placeholder:text-black interlight px-2 placeholder:opacity-50">
-        {% if form.password2.errors %}
+          <input type="password" name="password2" placeholder="Confirm Password" required
+            class="h-[60px] mt-2 bg-white bg-opacity-50 rounded-[25px] shadow border border-[#1d88e6] placeholder:text-white interlight px-2 placeholder:opacity-50">
+          {% if form.password2.errors %}
           <div class="hidden password2-errors">
             {% for error in form.password2.errors %}
-              <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
           </div>
-        {% endif %}
-      </div>
-      <button class="mx-4 w-[60%] h-11 rounded-xl text-center bg-[#FAFF00] hover:bg-[#a7a843] active:bg-[#c3c55a]" type="submit">
-        <div class="py-2 text-black text-xl font-bold inter">Sign Up</div>
-      </button>
-    </form>
-    {% if form.non_field_errors %}
+          {% endif %}
+        </div>
+        <button class="mx-4 mt-4 w-[60%] h-11 rounded-full text-center bg-[#1d88e6] hover:bg-[#104a7d] active:bg-[#1d88e6]"
+          type="submit">
+          <div class="py-2 text-white text-xl font-bold inter">Sign Up</div>
+        </button>
+      </form>
+      {% if form.non_field_errors %}
       <div class="hidden non-field-errors">
         {% for error in form.non_field_errors %}
-          <p>{{ error }}</p>
+        <p>{{ error }}</p>
         {% endfor %}
       </div>
-    {% endif %}
-    <div class="mx-[7rem] mt-3 text-gray-200 text-opacity-70 text-sm inter">Or sign up with </div>
-    <hr class="w-[50%] max-w-[210px] mt-3 mx-[90px]">
-    <div class="flex space-x-11 my-6 mx-32">
-      <form action="{% provider_login_url 'google' %}" method="post">
-        {% csrf_token %}
-      <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/glogo.svg' %}" alt=""></button>
-      </form>
-      <form action="{% provider_login_url 'facebook' %}" method="post">
-        {% csrf_token %}
-      <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/flogo.svg' %}" alt=""></button>
-      </form>
-    </div>
-    <div class="flex space-x-1">
-      <div class="text-white">Already have an account?</div>
-      <a class="text-[#FAFF00] hover:underline" href="{% url 'login_view' %}">Login here</a>
+      {% endif %}
+      <div class="pl-[7%]">
+        <div class="ml-[7rem] mt-3 text-white  text-sm inter">Or sign up with </div>
+        <hr class="w-[50%] max-w-[210px] mt-3 mx-[90px]">
+        <div class="flex space-x-11 my-6 justify-center">
+          <form action="{% provider_login_url 'google' %}" method="post">
+            {% csrf_token %}
+            <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/glogo.svg' %}" alt=""></button>
+          </form>
+          <form action="{% provider_login_url 'facebook' %}" method="post">
+            {% csrf_token %}
+            <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/flogo.svg' %}" alt=""></button>
+          </form>
+        </div>
+        <div class="flex space-x-1 pl-[15%]">
+          <div class="text-white">Already have an account?</div>
+          <a class="text-[#1d88e6] hover:underline" href="{% url 'login_view' %}">Login here</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -98,41 +106,41 @@
     function showAlert(message) {
       alert(message.trim());
     }
-  
-    window.onload = function() {
+
+    window.onload = function () {
       let errors = "";
-  
+
       const usernameErrors = document.querySelector('.username-errors');
       if (usernameErrors) {
         errors += usernameErrors.innerText.trim() + "\n";
       }
-  
+
       const emailErrors = document.querySelector('.email-errors');
       if (emailErrors) {
         errors += emailErrors.innerText.trim() + "\n";
       }
-  
+
       const password1Errors = document.querySelector('.password1-errors');
       if (password1Errors) {
         errors += password1Errors.innerText.trim() + "\n";
       }
-  
+
       const password2Errors = document.querySelector('.password2-errors');
       if (password2Errors) {
         errors += password2Errors.innerText.trim() + "\n";
       }
-  
+
       const nonFieldErrors = document.querySelector('.non-field-errors');
       if (nonFieldErrors) {
         errors += nonFieldErrors.innerText.trim() + "\n";
       }
-  
+
       if (errors) {
         showAlert(errors);
       }
     }
   </script>
-  
+
 </body>
 
 </html>

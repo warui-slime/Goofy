@@ -11,14 +11,20 @@ function lnav() {
     if (expanded) {
         if (window.innerWidth >= 768) {
             document.getElementById("allelements").classList.remove("md:ml-[280px]");
-            document.getElementById("allelements1").classList.remove("md:ml-[280px]");
+            if (document.getElementById("allelements1")) {
+                
+                document.getElementById("allelements1").classList.add("md:ml-[280px]");
+            }
             document.getElementById("searchbox").classList.remove("md:ml-[280px]");
         }
         else
         {
 
             document.getElementById("allelements").classList.remove("blur-sm");
-            document.getElementById("allelements1").classList.remove("blur-sm");
+            if (document.getElementById("allelements1")) {
+                
+                document.getElementById("allelements1").classList.add("blur:sm");
+            }
             document.getElementById("searchbox").classList.remove("blur-sm");
             document.getElementById("searchbox").classList.remove("sm:ml-[240px]");
             document.getElementById("logo").classList.remove("blur-sm");
@@ -43,14 +49,20 @@ function lnav() {
     else {
         if (window.innerWidth >= 768) {
             document.getElementById("allelements").classList.add("md:ml-[280px]");
-            document.getElementById("allelements1").classList.add("md:ml-[280px]");
+            if (document.getElementById("allelements1")) {
+                
+                document.getElementById("allelements1").classList.add("md:ml-[280px]");
+            }
             document.getElementById("searchbox").classList.add("md:ml-[280px]");
         }
         else
         {
 
             document.getElementById("allelements").classList.add("blur-sm");
-            document.getElementById("allelements1").classList.add("blur-sm");
+            if (document.getElementById("allelements1")) {
+                
+                document.getElementById("allelements1").classList.add("blur:sm");
+            }
             document.getElementById("searchbox").classList.add("blur-sm");
             document.getElementById("searchbox").classList.add("sm:ml-[240px]");
             document.getElementById("logo").classList.add("blur-sm");
@@ -127,21 +139,43 @@ function closesearch() {
     document.getElementById("searchbox").classList.add("hidden");
     document.getElementById("searchbox").classList.replace("w-[90%]","w-[70%]");
     document.getElementById("searchbox").classList.remove("ml-2.5");
+    document.getElementById("searchsuggestions").classList.add("hidden");
            
 }
 
+
+function horizontalscroll(left,eleid) {
+    if (left) {
+        document.getElementById(eleid).scrollLeft -= 200;
+    } else {
+        document.getElementById(eleid).scrollLeft += 200;
+    }
+
+}
+
+
 function clickmanage(event) {
-   
-    if(!document.getElementById("searchcontent").contains(event.target) && !document.getElementById("searchbtn").contains(event.target) &&  !document.getElementById("searchpic").contains(event.target) )
-        {
-        
-            closesearch();
-            
-        }
-    if (!document.getElementById("leftnav").classList.contains("hidden") && !document.getElementById("leftnav").contains(event.target) && !document.getElementById("ham").contains(event.target)) {
+    // Close the search content
+    if (!document.getElementById("searchcontent").contains(event.target) && 
+        !document.getElementById("searchbtn").contains(event.target) &&  
+        !document.getElementById("searchpic").contains(event.target)) {
+        closesearch();
+    }
+
+    // Close the left navigation
+    if (!document.getElementById("leftnav").classList.contains("hidden") && 
+        !document.getElementById("leftnav").contains(event.target) && 
+        !document.getElementById("ham2").contains(event.target)) {
         lnav();
-        
-    }    
+    }
+
+    // Close the playlist dropdown
+    document.querySelectorAll('.playlist-dropdown').forEach(dropdown => {
+        const button = dropdown.previousElementSibling;
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
 }
 
 

@@ -1,25 +1,19 @@
 function createribbon() {
-    const genres = {"New Releases":"bg-gradient-to-r from-[#7a2828] via-[#d29393] to-[#7a2828]", "Trending":"bg-gradient-to-r from-[#FF75C5] via-[#FFB6E0] to-[#FF75C5]", "Mood & Genres":"bg-gradient-to-r from-[#467b3d] via-[#b0f1a5] to-[#467b3d]", "Top Artists":"bg-gradient-to-r from-[#66DDEE] via-[#B3F5FF] to-[#66DDEE]"};
+    // const genres = {"New Releases":"bg-gradient-to-r from-[#7a2828] via-[#d29393] to-[#7a2828]", "Trending":"bg-gradient-to-r from-[#FF75C5] via-[#FFB6E0] to-[#FF75C5]", "Mood & Genres":"bg-gradient-to-r from-[#467b3d] via-[#b0f1a5] to-[#467b3d]", "Top Artists":"bg-gradient-to-r from-[#66DDEE] via-[#B3F5FF] to-[#66DDEE]"};
+    const genres = ["New Releases","Trending","Mood & Genres","Top Artists"];
 
     const ribbox = document.getElementById("ribbonbox");
     const parser = new DOMParser();
-    Object.entries(genres).forEach(([ele,k]) => {
+    genres.forEach(ele => {
         ribbox.appendChild(parser.parseFromString(`<div>
-        <button class="${k} mr-2 text-black text-lg font-semibold border-white border-[3px] rounded-lg hover:shadow-lg hover:shadow-white hover:scale-110">
+        <button class=" mr-2 text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 ">
             <div class="px-5 py-1 text-xl">${ele}</div>
         </button>
     </div>`, "text/html").body.firstChild);
-    });
+});
 }
 
-function horizontalscroll(left,eleid) {
-    if (left) {
-        document.getElementById(eleid).scrollLeft -= 200;
-    } else {
-        document.getElementById(eleid).scrollLeft += 200;
-    }
 
-}
 
 function heading1material() {
     const songscroll = document.getElementById("parentscrolldiv1");

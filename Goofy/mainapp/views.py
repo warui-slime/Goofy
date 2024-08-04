@@ -1,7 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .utils import goofyapi
 from django.http import JsonResponse,HttpResponseForbidden,FileResponse,HttpRequest
 from .models import LikedSong,Playlist
+from django.core.exceptions import ValidationError
+
 import os
 
 
@@ -29,11 +31,7 @@ def explore(request):
 
 def likes(request):
     if request.user.is_authenticated:
-        likedsongs = LikedSong.objects.filter(user=request.user).order_by('-liked_at')
-        liked_songs_list = list(likedsongs.values_list('song_id',flat=True))
-        inst = goofyapi.Goofyapi()
-        data = inst.getSongdetails(liked_songs_list)
-        return render(request,'mainapp/likes.html',context=data)
+        return render(request,'mainapp/likes.html')
     
     return redirect('login_view')
 
@@ -43,7 +41,11 @@ def library(request):
         return render(request,'mainapp/library.html')
     
     return redirect('login_view')
-    
+
+def profile(request:HttpRequest):
+    if request.user.is_authenticated:
+        return render(request,"mainapp/profile.html")
+
 def getExploredata(request):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
@@ -76,6 +78,12 @@ def getSong(request:HttpRequest):
         inst.getMusic(q)
         return createFileResponse(None,q[0])
     return HttpResponseForbidden("You do not have permission to access this page.") 
+
+def clearSongs(request:HttpRequest):
+    if request.user.is_authenticated:
+        for file in os.listdir("mainapp/static/mainapp/player/songs/"):
+            os.remove(os.path.join("mainapp/static/mainapp/player/songs/",file))
+    return JsonResponse({})
 
 def getSearch(request):
     if request.user.is_authenticated:
@@ -117,7 +125,7 @@ def getRelated(request):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getRelated(request.GET.get('query'))
-        inst.getMusic([i['videoId'] for i in data['related']])
+        inst.getMusic([i['videoId'] for i in data['related'][0:3]])
         for song in data["related"]:
             if song["videoId"]+".m4a" not in os.listdir("mainapp/static/mainapp/player/songs/"):
                 data['related'].remove(song)
@@ -145,34 +153,91 @@ def unlike_song(request):
 
 def getLikedSongs(request:HttpRequest):
     if request.method == "GET" and request.user.is_authenticated:
-        likedsongs = LikedSong.objects.filter(user=request.user)
+        likedsongs = LikedSong.objects.filter(user=request.user).order_by('-liked_at')
         liked_songs_list = list(likedsongs.values_list('song_id',flat=True))
-        return JsonResponse({'likedsongs': liked_songs_list})
+        if liked_songs_list:
+            inst = goofyapi.Goofyapi()
+            data = inst.getSongdetails(liked_songs_list)
+            return JsonResponse(data)
+        return JsonResponse({"likedata":None})
 
-
-def getPlaylists(request:HttpRequest):
+def getLikedata(request:HttpRequest):
     if request.method == "GET" and request.user.is_authenticated:
+        liked_songs = LikedSong.objects.filter(user=request.user).values_list('song_id', flat=True)
+        if liked_songs:
+            return JsonResponse({"likedids":list(liked_songs)})
+        return JsonResponse({"likedids":[]})
+
+def getPlaylists(request: HttpRequest):
+    if request.user.is_authenticated:
         playlists = Playlist.objects.filter(user=request.user)
         playlists_data = [{
             'name': playlist.name,
             'description': playlist.description,
             'song_ids': playlist.song_ids,
-            'playlist_id':playlist.playlist_id,
+            'playlist_id': playlist.playlist_id,
             'created_at': playlist.created_at,
             'updated_at': playlist.updated_at,
         } for playlist in playlists]
         return JsonResponse({'playlists': playlists_data})
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
 
 
-def createPlaylist(request:HttpRequest):
-    if request.method == 'POST':
+def createPlaylist(request: HttpRequest):
+    if request.user.is_authenticated:
         name = request.POST.get('name')
         description = request.POST.get('description', '')
+        song_id = request.POST.get('songId')  # Handling song_ids if needed
+        
+        if song_id:
+            song_id= [song_id]
+        else:
+            song_id=[]
+       
+        
+        if name:
+            try:
+                Playlist.objects.create(
+                    user=request.user,
+                    name=name,
+                    description=description,
+                    song_ids=song_id  # Include song_ids if applicable
+                )
+                return redirect('library')
+            except ValidationError as e:
+                return JsonResponse({'error': str(e)}, status=400)
+        return JsonResponse({'error': 'Name is required'}, status=400)
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+
+def updatePlaylist(request:HttpRequest):
+    if request.user.is_authenticated:
+        playlist = get_object_or_404(Playlist, playlist_id=request.POST.get("playlist_id"), user=request.user)
+
+        name = request.POST.get('name',playlist.name)
+        description = request.POST.get('description', '')
+        new_song_id = request.POST.get('song_id')  # Default to existing song_ids if not provided
 
         if name:
-            Playlist.objects.create(
-                user=request.user,
-                name=name,
-                description=description
-            )
-            return redirect('library')
+            playlist.name = name
+        if description:
+            playlist.description = description
+            
+        if new_song_id:
+            # Append new song IDs to the existing ones, ensuring no duplicates
+            playlist.song_ids = list(set(playlist.song_ids + [new_song_id]))
+
+        try:
+            playlist.clean()  # Validate the data
+            playlist.save()  # Save the updated playlist
+            return JsonResponse({'message': 'Playlist updated successfully'})
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+
+def getLyrics(request:HttpRequest):
+    if request.user.is_authenticated:
+        inst = goofyapi.Goofyapi()
+        songId = request.GET.get("songId")
+        return JsonResponse({"lyrics":inst.getLyrics(songId)['lyrics']})

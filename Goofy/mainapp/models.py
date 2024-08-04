@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 import uuid
 
 class LikedSong(models.Model):
@@ -25,6 +26,15 @@ class Playlist(models.Model):
     song_ids = models.JSONField(default=list)  
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        super().clean()
+        if len(self.song_ids) != len(set(self.song_ids)):
+            raise ValidationError("Song IDs must be unique.")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

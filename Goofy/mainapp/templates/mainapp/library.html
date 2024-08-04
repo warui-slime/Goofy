@@ -92,6 +92,15 @@
 {% endblock content %}
 {% block script %}
 <script>
+    $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#likedsongsbox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#profilebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#lchild').removeClass("bg-transparent");
+    $('#lchild').addClass("gradnav");
+</script>
+<script>
     $.ajax({
         url: "{% url 'getPlaylists' %}",
         type: "GET",

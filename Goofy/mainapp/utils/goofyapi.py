@@ -9,6 +9,7 @@ from mainapp.utils.mix.fetchartist import Fetchartist
 from mainapp.utils.mix.fetchmoods import Fetchmoods
 from mainapp.utils.mix.songdetails import FetchMusicDetails
 from mainapp.utils.mix.fetchrelated import Relatedcontent
+from mainapp.utils.mix.fetchlyrics import Lyrics
 
 
 import asyncio
@@ -84,3 +85,7 @@ class Goofyapi():
     def getRelated(self,query):
         ins = Relatedcontent()
         return {'related' :ins.getRelated(query)}
+    
+    def getLyrics(self,query):
+        ins = Lyrics()
+        return {"lyrics":ins.getLyrics(query)}

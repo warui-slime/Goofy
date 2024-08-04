@@ -1,0 +1,40 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+<div id="allelements" class="mt-12 pt-8 flex flex-col">
+    <div class="mt-4 ml-2 sm:ml-[100px]">
+        <div class="flex space-x-10 items-center font-medium">
+            <div id="logo" class="bg-gray-600 rounded-full h-[180px] w-[180px] flex items-center justify-center">
+                <img src="{% static 'mainapp/profileassets/profile1.svg' %}" alt="">
+            </div>
+            <div class="flex-col">
+
+                <div class="text-7xl text-white">
+                    {{user.username}}
+                </div>
+                <div class="text-red-500 mt-2 ml-2 hover:underline">
+
+                    <a href="{% url 'logout_view' %}">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#likedsongsbox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#profilebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
+    $('#lchild').removeClass("bg-transparent");
+    $('#lchild').addClass("gradnav");
+</script>
+{% endblock script %}
