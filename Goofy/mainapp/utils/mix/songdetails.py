@@ -9,7 +9,7 @@ class FetchMusicDetails:
         url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={sid}"
         response = await client.get(url, headers=self.headers)
         data = response.json()
-        return {'title': data['title'], 'author': data["author_name"].replace(" - Topic", ""), "thumbnail": data["thumbnail_url"]}
+        return {'title': data['title'], 'author': data["author_name"].replace(" - Topic", ""), "thumbnail": data["thumbnail_url"],"songId":sid}
 
     async def get_song_details(self, song_ids: list):
         async with httpx.AsyncClient() as client:

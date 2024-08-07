@@ -7,7 +7,7 @@ import aiohttp
 class Home_page:
     def __init__(self) -> None:
         self.ytm = YTMusic()
-        self.INchart = self.ytm.get_charts('IN')
+        self.INchart = self.ytm.get_charts('US')
 
     
 

@@ -13,7 +13,7 @@ function lnav() {
             document.getElementById("allelements").classList.remove("md:ml-[280px]");
             if (document.getElementById("allelements1")) {
                 
-                document.getElementById("allelements1").classList.add("md:ml-[280px]");
+                document.getElementById("allelements1").classList.remove("md:ml-[280px]");
             }
             document.getElementById("searchbox").classList.remove("md:ml-[280px]");
         }

@@ -9,7 +9,7 @@
 
     <div class="flex-col poppins-regular mt-10 ">
         <div class="text-white flex w-[98%] text-[30px] justify-between">
-            <div>Trending</div>
+            <div class="montserrat">Trending</div>
             <div id="scrollnavbtn" class="flex">
                 <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv2')">
                     <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -39,7 +39,7 @@
     </div>
     <div class="flex-col poppins-regular mt-10 ">
         <div class="text-white flex w-[98%] text-[30px] justify-between">
-            <div>Albums Right Now</div>
+            <div class="montserrat">Albums Right Now</div>
             <div id="scrollnavbtn" class="flex">
                 <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv3')">
                     <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -70,7 +70,7 @@
     </div>
 
     <div class="flex-col poppins-regular mt-10 space-y-3 text-white">
-        <div class=" w-[98%] text-[30px] ">Top Songs</div>
+        <div class=" w-[98%] text-[30px] montserrat">Top Songs</div>
         <div id="h4" class="w-full  grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-y-2">
             {% for _ in 'x'|rjust:15 %}
             <div>
@@ -96,7 +96,7 @@
 
     <div class="flex-col poppins-regular mt-10 ">
         <div class="text-white flex w-[98%] text-[30px] justify-between">
-            <div>Trending Artists</div>
+            <div class="montserrat">Trending Artists</div>
             <div id="scrollnavbtn" class="flex">
                 <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv5')">
                     <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -107,7 +107,7 @@
             </div>
         </div>
         <div id="parentscrolldiv5"
-            class="scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-52  w-[98%]  grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5 pl-1">
+            class="scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-52  w-[98%]  grid grid-flow-col auto-cols-auto  scroll-smooth space-x-7 pl-1">
             {% for _ in 'x'|rjust:10 %}
             <div>
                 <div class="h-[121px] w-[121px] bg-gray-800 animate-pulse shadow-lg rounded-md">
@@ -138,9 +138,9 @@
         <div id="allelements1" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
         <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-2 mt-20">
         </div>
-        <div class="flex-col poppins-regular mt-10 ">
-            <div class="text-white flex w-[98%] text-[30px] justify-between">
-                <div>Get Started</div>
+        <div class="flex-col mt-10 ">
+            <div class="text-white flex w-[98%] text-[30px] justify-between ">
+                <div class="montserrat">Get Started</div>
                 <div id="scrollnavbtn" class="flex">
                     <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
                         <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -189,11 +189,11 @@
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-40 pt-1 text-container">
-                                    <span class="animated-text w-40">
+                                    <span class="animated-text w-40 raleway">
                                         ${item.title}
                                     </span>
                                 </div>
-                                <div class="text-white w-40 h-[25px]">
+                                <div class="text-white w-40 h-[25px] lora">
                                  ${item.artist}
                                 </div>
                             </button>
@@ -215,17 +215,17 @@
 
                     $('#parentscrolldiv2').append(
                         `
-                            <button class="hover:scale-110" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.artist}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
-                                <div class="h-40 w-40 ">
+                            <button class="hover:scale-110s" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.artist}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                                <div class="h-36 w-40 ">
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-40 pt-1 text-container">
-                                    <span class="text-white w-40 animated-text title-text">
+                                    <span class="text-white w-40 animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
                                 <div class="text-white w-40 h-[25px] text-container">
-                                    <span class="text-white w-40 h-[25px] animated-text artist-text">
+                                    <span class="text-white w-40 h-[25px] animated-text artist-text lora">
                                         ${item.artist}
                                     </span>
                                 </div>
@@ -260,12 +260,12 @@
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-40 pt-1 text-container">
-                                    <span class="text-white w-40 animated-text title-text">
+                                    <span class="text-white w-40 animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
                                 <div class="text-white w-40 h-[25px] text-container">
-                                    <span class="text-white w-40 h-[25px] animated-text artist-text">
+                                    <span class="text-white w-40 h-[25px] animated-text artist-text lora">
                                         ${item.artist}
                                     </span>
                                 </div>
@@ -301,13 +301,13 @@
                                 <img src="${item.thumbnail}" alt="">
                             </div>
                             <div>
-                                <div class="text-container">
-                                    <span class="text-white w-40 animated-text title-text">
+                                <div class="text-container text-start">
+                                    <span class="text-white w-40 animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
-                                <div class="text-container">
-                                    <span class="text-white w-40 animated-text artist-text">
+                                <div class="text-container text-start">
+                                    <span class="text-white w-40 animated-text artist-text lora">
                                         ${item.artist}
                                     </span>
                                 </div>
@@ -318,7 +318,7 @@
                     );
                     var $lastAddedText = $("#h4 .title-text").last();
                     var trimmedText = $lastAddedText.text().trim();
-                    if (trimmedText.length <= 15) {
+                    if (trimmedText.length <= 20) {
 
                         $lastAddedText.removeClass("animated-text");
                         $lastAddedText.closest(".text-container").removeClass("text-container");
@@ -326,7 +326,7 @@
 
                     var $lastAddedArtistText = $("#h4 .artist-text").last();
                     var trimmedArtistText = $lastAddedArtistText.text().trim();
-                    if (trimmedArtistText.length <= 15) {
+                    if (trimmedArtistText.length <= 20) {
                         $lastAddedArtistText.removeClass("animated-text");
                         $lastAddedArtistText.closest(".text-container").removeClass("text-container");
                     }
@@ -340,11 +340,11 @@
                     $('#parentscrolldiv5').append(
                         `
                             <button class="hover:scale-110" author_id ='${item.browseId}' onclick = "getAR(this.getAttribute('author_id'),'${item.title}')" >
-                                <div class="h-[121px] w-[121px] scale-125 flex justify-center">
-                                    <img src="${item.thumbnail}" alt="">
+                                <div class="h-[121px] w-[121px]  flex justify-center">
+                                    <img class="scale-125" src="${item.thumbnail}" alt="">
                                 </div>
-                                <div class="text-white w-40 mt-4 text-container  pr-10">
-                                    <span class="text-white animated-text title-text">
+                                <div class="text-white w-32 mt-4 text-container  text-start">
+                                    <span class="text-white animated-text title-text lora">
                                         ${item.title}
                                     </span>
                                 </div>

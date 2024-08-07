@@ -5,13 +5,54 @@
 {% block title %}Explore{% endblock title %}
 {% block content %}
 <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
-    <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-2">
-
+    <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-4 mt-20">
+        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#ribbonbox">
+            <div class="px-5 py-1 text-xl">New Releases</div>
+        </a>
+        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h1">
+            <div class="px-5 py-1 text-xl">Top Playlists</div>
+        </a>
+        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h2">
+            <div class="px-5 py-1 text-xl">Mood & Genres</div>
+        </a>
+        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h4">
+            <div class="px-5 py-1 text-xl">Trending Albums</div>
+        </a>
     </div>
 
+    <div class="flex-col poppins-regular mt-10 ">
+        <div class="text-white flex w-[98%] text-[30px] justify-between">
+            <div class="montserrat">New Releases</div>
+            <div id="scrollnavbtn" class="flex">
+                <button class="hover:scale-110" onclick="horizontalscroll(true,'h1')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                </button>
+                <button class="hover:scale-110" onclick="horizontalscroll(false,'h1')">
+                    <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                </button>
+            </div>
+        </div>
+        <div id="h1"
+            class=" scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5 pl-1">
+            {% for _ in 'x'|rjust:10 %}
+            <div>
+                <div class="h-[121px] w-[121px] bg-gray-800 animate-pulse shadow-lg rounded-md">
 
+                </div>
+                <div class="w-24 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
+
+                </div>
+                <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-2 ml-1">
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
     <div class="text-white flex w-[98%] text-[30px] justify-between">
-        <div>Top Playlists</div>
+        <div class="montserrat">Top Playlists</div>
         <div id="scrollnavbtn" class="flex">
             <button class="hover:scale-110" onclick="horizontalscroll(true,'h2')">
                 <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -35,8 +76,8 @@
         {% endfor %}
     </div>
 
-    <div class="flex-col poppins-regular mt-10">
-        <div class="text-white flex w-full text-[30px]">
+    <div class="flex-col  mt-10">
+        <div class="text-white flex w-full text-[30px] montserrat">
             Mood & genres
         </div>
         <div id="h3" class="mt-5 w-[98%] grid grid-cols-6 grid-rows-6 gap-5 text-white *:poppins-regular">
@@ -53,7 +94,7 @@
     </div>
 
     <div class="text-white flex w-[98%] text-[30px] justify-between mt-10">
-        <div>Heading 4</div>
+        <div class="montserrat">Trending Albums</div>
         <div id="scrollnavbtn" class="flex">
             <button class="hover:scale-110" onclick="horizontalscroll(true,'h4')">
                 <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
@@ -91,6 +132,11 @@
 <script>
     $("#exploreimg").attr("src", "{% static 'mainapp/homepageassets/explore1.svg' %}");
     $("#homeimg").attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
+    $('#libimg').attr("src","{% static 'mainapp/homepageassets/library2.svg' %}");
+    $('#likedsongsimg').attr("src","{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src","{% static 'mainapp/homepageassets/profile2.svg' %}");
+
+
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
@@ -100,45 +146,15 @@
     $('#lchild').addClass("gradnav");
 
 </script>
-<script>
+<!-- <script>
     // $("#grad-control").addClass("gradnav1");
     $("#grad-control").append(`
         <div id="allelements1" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
         <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-2 mt-20">
         </div>
-        <div class="flex-col poppins-regular mt-10 ">
-            <div class="text-white flex w-[98%] text-[30px] justify-between">
-                <div>Heading 1</div>
-                <div id="scrollnavbtn" class="flex">
-                    <button class="hover:scale-110" onclick="horizontalscroll(true,'parentscrolldiv1')">
-                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
-                    </button>
-                    <button class="hover:scale-110" onclick="horizontalscroll(false,'parentscrolldiv1')">
-                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
-                    </button>
-                </div>
-            </div>
-            <div id="h1"
-                class=" scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5 pl-1">
-                {% for _ in 'x'|rjust:10 %}
-                <div>
-                    <div class="h-[121px] w-[121px] bg-gray-800 animate-pulse shadow-lg rounded-md">
-
-                    </div>
-                    <div class="w-24 h-2 rounded bg-gray-700 animate-pulse  mt-3 ml-1">
-
-                    </div>
-                    <div class="w-20 h-2 rounded bg-gray-700 animate-pulse  mt-2 ml-1">
-
-                    </div>
-
-                </div>
-                {% endfor %}
-            </div>
-
-        </div>
+        
     </div>`);
-</script>
+</script> -->
 <script src="{% static 'mainapp/explorepage/newexplore.js' %}"></script>
 
 <script>
@@ -159,12 +175,12 @@
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-32 mt-1 text-container">
-                                    <span class="animated-text title-text">
+                                    <span class="animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
                                 <div class="text-white w-32 text-container">
-                                    <span class=" animated-text artist-text">
+                                    <span class=" animated-text artist-text lora">
                                         ${item.artist}
                                     </span>
                                 </div>
@@ -197,7 +213,7 @@
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-40 pt-1 text-container">
-                                    <span class="animated-text title-text">
+                                    <span class="animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
@@ -235,12 +251,12 @@
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
                                 <div class="text-white w-40 pt-1 text-container">
-                                    <span class="animated-text title-text">
+                                    <span class="animated-text title-text raleway">
                                         ${item.title}
                                     </span>
                                 </div>
                                 <div class="text-white w-40 text-container">
-                                    <span class=" animated-text artist-text">
+                                    <span class=" animated-text artist-text lora">
                                         ${item.artist}
                                     </span>
                                 </div>

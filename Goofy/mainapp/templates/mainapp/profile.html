@@ -7,28 +7,46 @@
 <div id="allelements" class="mt-12 pt-8 flex flex-col">
     <div class="mt-4 ml-2 sm:ml-[100px]">
         <div class="flex space-x-10 items-center font-medium">
-            <div id="logo" class="bg-gray-600 rounded-full h-[180px] w-[180px] flex items-center justify-center">
-                <img src="{% static 'mainapp/profileassets/profile1.svg' %}" alt="">
-            </div>
+            <button id="logo" class="relative rounded-full h-[180px] w-[180px] flex items-center justify-center group" onclick="toggleCard()">
+                <img src="{% static 'mainapp/profileassets/dog.svg' %}" alt="" class="rounded-full h-full w-full transition duration-300 ease-in-out group-hover:opacity-50">
+                <img src="{% static 'mainapp/profileassets/editdog.svg' %}" alt="edit" class="absolute opacity-0 transition duration-300 ease-in-out group-hover:opacity-100">
+            </button>
             <div class="flex-col">
-
-                <div class="text-7xl text-white">
-                    {{user.username}}
+                <div class="text-7xl text-white montserrat">
+                    {{ user.username }}
                 </div>
-                <div class="text-red-500 mt-2 ml-2 hover:underline">
-
-                    <a href="{% url 'logout_view' %}">
+                <div class="text-red-500 mt-2 ml-2 ">
+                    <a class="hover:underline" href="{% url 'logout_view' %}">
                         Logout
                     </a>
                 </div>
             </div>
         </div>
-       
+    </div>
+</div>
+<div id="imageSelectionCard" class="hidden fixed inset-0 flex items-center justify-center bg-[#121212] bg-opacity-75">
+    <div class="bg-[#1E1E1E] p-8 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-white montserrat">Select a new profile image</h2>
+        <div class="grid grid-cols-3 gap-4">
+            <img src="{% static 'mainapp/profileassets/dog0.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog1.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog2.2.svg' %}" alt="Dog 2" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog2.svg')">
+            <img src="{% static 'mainapp/profileassets/dog3.2.svg' %}" alt="Dog 3" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog3.svg')">
+            <img src="{% static 'mainapp/profileassets/dog4.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog4.svg')">
+            <img src="{% static 'mainapp/profileassets/dog5.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog4.svg')">
+        </div>
+        <button class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 raleway" onclick="toggleCard()">Close</button>
     </div>
 </div>
 {% endblock content %}
 {% block script %}
 <script>
+    $('#libimg').attr("src","{% static 'mainapp/homepageassets/library2.svg' %}");
+    $('#homeimg').attr("src","{% static 'mainapp/homepageassets/home2.svg' %}");
+    $('#exploreimg').attr("src","{% static 'mainapp/homepageassets/explore2.svg' %}");
+    $('#likedsongsimg').attr("src","{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src","{% static 'mainapp/homepageassets/profile1.svg' %}");
+
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
@@ -37,4 +55,18 @@
     $('#lchild').removeClass("bg-transparent");
     $('#lchild').addClass("gradnav");
 </script>
+<script>
+    function toggleCard() {
+        const card = $('#imageSelectionCard');
+        card.classList.toggle('hidden');
+    }
+
+    function selectImage(imageName) {
+        const profileImage = document.querySelector('#logo img');
+        profileImage.src = `{% static 'mainapp/profileassets/' %}` + imageName;
+        toggleCard();
+        // Optionally, you can add code here to save the selected image on the server
+    }
+</script>
+
 {% endblock script %}

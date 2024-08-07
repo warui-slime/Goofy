@@ -47,6 +47,32 @@ body {
 }
 
 
+.montserrat {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+.lora{
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+.roboto {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+.raleway {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+
 .scrollbar::-webkit-scrollbar {
     width: 20px;
     height: 10px;
@@ -187,7 +213,7 @@ body {
     overflow: hidden;
     white-space: nowrap;
     position: relative;
-    text-align: center;
+
 }
 
 .animated-text {

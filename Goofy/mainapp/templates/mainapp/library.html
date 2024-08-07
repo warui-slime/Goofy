@@ -11,8 +11,8 @@
 
         <div class="text-white flex w-[98%] justify-between">
             <div class="flex space-x-5">
-                <div class="text-white text-[30px]">Your Playlists</div>
-                <button class="text-[20px] font-bold pt-2 hover:text-gray-500 hover:scale-110">Show all</button>
+                <div class="text-white text-[30px] montserrat">Your Playlists</div>
+
             </div>
             <div id="scrollnavbtn" class="flex">
                 <button class="hover:scale-110" onclick="horizontalscroll(true,'playlistgrid')">
@@ -92,6 +92,14 @@
 {% endblock content %}
 {% block script %}
 <script>
+    $('#libimg').attr("src","{% static 'mainapp/homepageassets/library1.svg' %}");
+    $('#homeimg').attr("src","{% static 'mainapp/homepageassets/home2.svg' %}");
+    $('#exploreimg').attr("src","{% static 'mainapp/homepageassets/explore2.svg' %}");
+    $('#likedsongsimg').attr("src","{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src","{% static 'mainapp/homepageassets/profile2.svg' %}");
+
+
+
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
