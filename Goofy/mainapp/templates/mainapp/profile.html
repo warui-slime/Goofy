@@ -8,7 +8,7 @@
     <div class="mt-4 ml-2 sm:ml-[100px]">
         <div class="flex space-x-10 items-center font-medium">
             <button id="logo" class="relative rounded-full h-[180px] w-[180px] flex items-center justify-center group" onclick="toggleCard()">
-                <img src="{% static 'mainapp/profileassets/dog.svg' %}" alt="" class="rounded-full h-full w-full transition duration-300 ease-in-out group-hover:opacity-50">
+                <img id="profile-img" src="{% static 'mainapp/profileassets/dog.svg' %}" alt="" class="rounded-full h-full w-full transition duration-300 ease-in-out group-hover:opacity-50">
                 <img src="{% static 'mainapp/profileassets/editdog.svg' %}" alt="edit" class="absolute opacity-0 transition duration-300 ease-in-out group-hover:opacity-100">
             </button>
             <div class="flex-col">
@@ -28,12 +28,12 @@
     <div class="bg-[#1E1E1E] p-8 rounded-lg shadow-lg">
         <h2 class="text-xl font-semibold mb-4 text-white montserrat">Select a new profile image</h2>
         <div class="grid grid-cols-3 gap-4">
-            <img src="{% static 'mainapp/profileassets/dog0.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog1.svg')">
-            <img src="{% static 'mainapp/profileassets/dog1.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog1.svg')">
-            <img src="{% static 'mainapp/profileassets/dog2.2.svg' %}" alt="Dog 2" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog2.svg')">
-            <img src="{% static 'mainapp/profileassets/dog3.2.svg' %}" alt="Dog 3" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog3.svg')">
-            <img src="{% static 'mainapp/profileassets/dog4.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog4.svg')">
-            <img src="{% static 'mainapp/profileassets/dog5.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog4.svg')">
+            <img src="{% static 'mainapp/profileassets/dog0.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog.svg')">
+            <img src="{% static 'mainapp/profileassets/dog1.2.svg' %}" alt="Dog 1" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog1.1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog2.2.svg' %}" alt="Dog 2" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog2.1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog3.2.svg' %}" alt="Dog 3" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog3.1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog4.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog4.1.svg')">
+            <img src="{% static 'mainapp/profileassets/dog5.2.svg' %}" alt="Dog 4" class="cursor-pointer rounded hover:bg-[#373737] p-2" onclick="selectImage('dog5.1.svg')">
         </div>
         <button class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 raleway" onclick="toggleCard()">Close</button>
     </div>
@@ -57,16 +57,31 @@
 </script>
 <script>
     function toggleCard() {
-        const card = $('#imageSelectionCard');
+        const card = document.getElementById('imageSelectionCard');
         card.classList.toggle('hidden');
     }
 
     function selectImage(imageName) {
-        const profileImage = document.querySelector('#logo img');
+        const profileImage = document.getElementById("profile-img");
         profileImage.src = `{% static 'mainapp/profileassets/' %}` + imageName;
+        $.post({
+            url: '{% url "updateProfileImage" %}',
+            data:{'path':imageName,
+                'csrfmiddlewaretoken': getCSRFToken()
+            }
+        });
         toggleCard();
-        // Optionally, you can add code here to save the selected image on the server
+        
     }
+</script>
+<script>
+    $.get({
+        url:"{% url 'getProfileImage' %}",
+        success:function(response){
+            const imgpath = "{% static 'mainapp/profileassets/' %}" + response.image;
+            document.getElementById("profile-img").src= imgpath;
+        }
+    })
 </script>
 
 {% endblock script %}

@@ -6,16 +6,20 @@
 {% block content %}
 <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
     <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-4 mt-20">
-        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#ribbonbox">
+        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 "
+            href="#ribbonbox">
             <div class="px-5 py-1 text-xl">New Releases</div>
         </a>
-        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h1">
+        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 "
+            href="#h1">
             <div class="px-5 py-1 text-xl">Top Playlists</div>
         </a>
-        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h2">
+        <a class=" text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 "
+            href="#h2">
             <div class="px-5 py-1 text-xl">Mood & Genres</div>
         </a>
-        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 " href="#h4">
+        <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 "
+            href="#h4">
             <div class="px-5 py-1 text-xl">Trending Albums</div>
         </a>
     </div>
@@ -132,9 +136,9 @@
 <script>
     $("#exploreimg").attr("src", "{% static 'mainapp/homepageassets/explore1.svg' %}");
     $("#homeimg").attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
-    $('#libimg').attr("src","{% static 'mainapp/homepageassets/library2.svg' %}");
-    $('#likedsongsimg').attr("src","{% static 'mainapp/homepageassets/mylikes2.svg' %}");
-    $('#profileimg').attr("src","{% static 'mainapp/homepageassets/profile2.svg' %}");
+    $('#libimg').attr("src", "{% static 'mainapp/homepageassets/library2.svg' %}");
+    $('#likedsongsimg').attr("src", "{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src", "{% static 'mainapp/homepageassets/profile2.svg' %}");
 
 
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
@@ -290,71 +294,5 @@
     });
 
 </script>
-<script>
-    function getMood(moodplID, moodtitle) {
-        $.ajax({
-            url: '{% url "getMoodpl" %}',
-            data: { 'query': moodplID },
-            success: function (response) {
-                $("#allelements1").remove();
-                $("#lchild").remove("bg-transparent");
-                $("#lchild").addClass("gradnav");
-                $("#allelements").empty();
-                $("#allelements").append(
-                    `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
-                            <div class="text-white poppins-regular">
-                                Results for 
-                            </div>
-                            <div class="text-sky-600 corey-font">
-                                ${moodtitle}
-                            </div>
-    
-                        </div>
-                        
-                        `
-                );
 
-                $("#allelements").append(
-                    `
-                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-8">
-                            </div>
-                            `
-                )
-                response.mooddata.forEach(item => {
-
-                    $("#griddiv").append(
-                        `
-                    
-                        <button class="flex flex-col my-4" playlistId="${item.playlistid}" onclick = "getPL(this.getAttribute('playlistId'),'${item.title}')">
-                            <div class= "w-40 ">
-                                <img class="" src="${item.thumbnail}" alt="">
-                            </div>
-                            <div class="text-white">
-                                <div class="text-container w-[170px]">
-                                    <span class="animated-text">
-                                        ${item.title}
-                                    </span>
-                                </div>
-                               
-                            </div>
-                        </button>
-                   
-                    `
-                    );
-                    var $lastAddedText = $("#griddiv .animated-text").last();
-
-
-                    var trimmedText = $lastAddedText.text().trim();
-
-
-                    if (trimmedText.length <= 20) {
-
-                        $lastAddedText.removeClass("animated-text");
-                        $lastAddedText.closest(".text-container").removeClass("text-container");
-                    }
-                });
-            }
-        });
-    }
-</script>
 {% endblock script %}

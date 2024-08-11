@@ -28,4 +28,6 @@ urlpatterns = [
     path('updatePlaylist/', goofyviews.updatePlaylist, name='updatePlaylist'),
     path('clearsongs/', goofyviews.clearSongs, name='clearsongs'),
     path('getLyrics/', goofyviews.getLyrics, name='getLyrics'),
+    path('getProfileImage/',goofyviews.getProfileImage,name='getProfileImage'),
+    path('updateProfileImage/',goofyviews.updateProfileImage,name='updateProfileImage')
 ]

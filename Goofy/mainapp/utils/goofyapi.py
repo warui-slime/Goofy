@@ -19,7 +19,8 @@ class Goofyapi():
         inst = Home_page()
        
 
-        heading1, heading2, heading3, heading4, heading5 = await asyncio.gather(
+        ribbon,heading1, heading2, heading3, heading4, heading5 = await asyncio.gather(
+            inst.getRibbonData(),
             inst.get_heading1(),
             inst.get_heading2(),
             inst.get_heading3(),
@@ -27,6 +28,7 @@ class Goofyapi():
             inst.get_heading5()
         )
         return {
+            'ribbon':ribbon,
             'heading1': heading1,
             'heading2': heading2,
             'heading3': heading3,

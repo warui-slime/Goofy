@@ -23,6 +23,12 @@ class Home_page:
             }
             return temp_data
 
+    async def getRibbonData(self):
+        pile_data=[]
+        moods = self.ytm.get_mood_categories()
+        pile_data.extend(moods['Moods & moments'][:7])
+        return pile_data
+    
     async def get_heading1(self): 
         home_data = self.ytm.get_home(limit=13)
        
@@ -116,4 +122,7 @@ class Home_page:
                 }
             pile_data.append(temp_dict)
         return pile_data
+
+    
+
 

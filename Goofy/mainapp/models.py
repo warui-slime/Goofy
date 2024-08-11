@@ -38,3 +38,11 @@ class Playlist(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Image(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.CharField(max_length=20)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image of {self.user.username}" 

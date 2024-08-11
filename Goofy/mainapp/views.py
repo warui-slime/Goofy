@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .utils import goofyapi
 from django.http import JsonResponse,HttpResponseForbidden,FileResponse,HttpRequest
-from .models import LikedSong,Playlist
+from .models import LikedSong,Playlist,Image
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 
 import os
 
@@ -126,7 +127,7 @@ def getRelated(request):
         inst = goofyapi.Goofyapi()
         data = inst.getRelated(request.GET.get('query'))
         inst.getMusic([i['videoId'] for i in data['related'][0:3]])
-        for song in data["related"]:
+        for song in data["related"][0:3]:
             if song["videoId"]+".m4a" not in os.listdir("mainapp/static/mainapp/player/songs/"):
                 data['related'].remove(song)
            
@@ -241,3 +242,24 @@ def getLyrics(request:HttpRequest):
         inst = goofyapi.Goofyapi()
         songId = request.GET.get("songId")
         return JsonResponse({"lyrics":inst.getLyrics(songId)['lyrics']})
+    
+
+def getProfileImage(request:HttpRequest):
+    if request.user.is_authenticated:
+        try:
+            image = Image.objects.get(user=request.user)
+            return JsonResponse({"image":image.image})
+        except Image.DoesNotExist:
+            return JsonResponse({'error': "ERROR!"}, status=404)
+
+
+def updateProfileImage(request:HttpRequest):
+    if request.user.is_authenticated:
+        Image.objects.update_or_create(
+                    user=request.user,
+                    defaults={
+                    'image':request.POST.get("path"),
+                    }
+                )
+        return JsonResponse({'success': "success"})
+    return JsonResponse({'error': "ERROR!"}, status=400)

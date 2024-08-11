@@ -13,8 +13,10 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&display=swap"
         rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{% static 'mainapp/homepageassets/style.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -39,23 +41,28 @@
 
                     <div id="hel"
                         class="*:my-2 *:flex *:space-x-7 *:rounded-md *:items-center *:h-12 *:w-[80%] *:ml-[0.4rem] *:pl-[0.85rem]">
-                        <a id="homebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]" href="{% url 'home' %}">
+                        <a id="homebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            href="{% url 'home' %}">
                             <div title="Home"><img id="homeimg" src="{% static 'mainapp/homepageassets/home1.svg' %}"
                                     alt=""></div>
                             <div id="home" class="text-center pt-0.5 sm:hidden">Home</div>
                         </a>
-                        <a id="explorebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]" href="{% url 'explore' %}">
+                        <a id="explorebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            href="{% url 'explore' %}">
                             <div title="Explore"><img id="exploreimg"
                                     src="{% static 'mainapp/homepageassets/explore2.svg' %}" alt="">
                             </div>
                             <div id="explore" class="text-center pt-0.5 sm:hidden">Explore</div>
                         </a>
-                        <a id="librarybox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]" href="{% url 'library' %}">
-                            <div title="Library"><img id="libimg" src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
+                        <a id="librarybox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            href="{% url 'library' %}">
+                            <div title="Library"><img id="libimg"
+                                    src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
                             </div>
                             <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
                         </a>
-                        <a id="likedsongsbox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]" href="{% url 'mylikes' %}">
+                        <a id="likedsongsbox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            href="{% url 'mylikes' %}">
                             <div title="My Likes"><img id="likedsongsimg"
                                     src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
                             </div>
@@ -68,7 +75,7 @@
                     <a id="profilebox"
                         class="mt-2 h-[50px] flex rounded-[10px] hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9] w-[80%] ml-2 pl-[0.7rem] space-x-7 items-center"
                         href="{% url 'profile' %}">
-                        <div >
+                        <div>
                             <img id="profileimg" src="{% static 'mainapp/homepageassets/profile2.svg' %}" alt="">
                         </div>
                         <div id="profile" class="text-center pt-1 sm:hidden">Profile</div>
@@ -448,14 +455,38 @@
             }
         }
         function playnext() {
+
             if (alltracks.length - 1 == curr_song_index) {
                 return 0;
             }
-            curr_song_index += 1;
-            if (islyrics) {
+            else if (alltracks.length - 1 > curr_song_index) {
+                const song_ask = related_songs[curr_song_index + 3];
+                $.ajax({
+                    type: "GET",
+                    url: '{% url "getSong" %}',
+                    data: { 'query': [song_ask.videoId] },
+                    xhrFields: {
+                        responseType: 'blob' // This is crucial to handle the file as a blob
+                    },
 
-                lyricsbtn();
+                    success: function (response) {
+
+
+                        var blob = new Blob([response], { type: 'audio/m4a' });
+                        var url = URL.createObjectURL(blob);
+
+                        alltracks.push({ "songId": song_ask.videoId, "songname": song_ask.title, "author": song_ask.author, "thumbnail": song_ask.thumbnail, "blob": url })
+
+
+                    }
+                })
+
+
+
+
             }
+            curr_song_index += 1;
+
             changesong();
 
 
@@ -672,6 +703,7 @@
             $("#song-img").append(`<img class="h-[55px] w-[55px]" src=${thumbnail} alt="">`);
 
             $.ajax({
+                type: "GET",
                 url: '{% url "getSong" %}',
                 data: { 'query': [videoId] },
                 xhrFields: {
@@ -708,12 +740,13 @@
                         document.getElementById("song_duration").innerText = `${Math.floor(audio.duration / 60)}:${String(Math.floor(audio.duration % 60)).padStart(2, '0')}`;
 
                     })
-                    playpause();
                     // if (audio.readyState) {
                     //     setInterval(sliderTools, 1000);
                     // }
 
+                    playpause();
                     $.ajax({
+                        type: "GET",
                         url: '{% url "getRelated" %}',
                         data: { 'query': videoId },
                         success: function (response) {
@@ -721,7 +754,7 @@
                             related_songs = response.related;
 
                             related_songs.slice(0, 3).forEach(s => {
-                                $.ajax({
+                                $.get({
                                     url: '{% url "getmusicblob" %}',
                                     type: "GET",
                                     data: { 'query': s.videoId },
@@ -737,7 +770,11 @@
                                         alltracks.push({ "songId": s.videoId, "songname": s.title, "author": s.author, "thumbnail": s.thumbnail, "blob": url });
                                     }
                                 });
-                            })
+                            });
+                            if (islyrics) {
+                                placeUpNext();
+                            }
+
                         }
 
                     });
@@ -754,8 +791,9 @@
             $("#lchild").addClass("gradnav");
             $("#allelements").empty();
             $("#allelements").append(
-                `<div class="text-white poppins-regular flex w-[98%] text-[30px] mt-16 pt-4 text-sky-600 mb-2">
-                    Results for "${title}"
+                `<div class="text-white  flex w-[98%] text-[30px] mt-20  space-x-2 ">
+                    <div class="montserrat">Results for </div>
+                    <div class="lora font-bold">${title}</div>
                 </div>
                 <hr class="my-2 mr-2 bg-white">
                     
@@ -786,7 +824,7 @@
             <!-- Add to Playlist Dropdown -->
             <div class="relative">
                 <button songId="${item.videoId}" class="playlist-btn flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-600" onclick="toggleDropdown(this)">
-                    <img class="playlist-icon" src="{% static 'mainapp/player/add-to-play.svg' %}" alt="Add to Playlist">
+                    <img class="playlist-icon" src="{% static 'mainapp/player/addlib.svg' %}" alt="Add to Playlist">
                 </button>
                 <div class="playlist-dropdown hidden absolute right-0 w-48 bg-gray-800 text-white border border-gray-700 rounded-lg shadow-lg z-10">
                    
@@ -808,7 +846,10 @@
 
 
                     success: function (response) {
-                        $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+                        $('html, body').css(
+                        'background-color', 'transparent'
+                        );
+                        $('body').addClass("bg-gradient-to-r from-[#121212] from-5% via-[#1e1e1e] via-20% via-[#5398C9] via-50% to-[#00438F] to-90%");
                         makeResultHeading(title = e.target.value);
                         closesearch();
 
@@ -839,7 +880,11 @@
                                         ${item.title}
                                     </span>
                                 </div>
-                                <div class="text-red-600 artist-text lora">${item.author}</div>
+                                <div class="text-container artist-text lora">
+                                    <span class="animated-text lora">
+                                        ${item.author}
+                                    </span>
+                                </div>
                             </div>
                         </button>
                    
@@ -848,17 +893,17 @@
             var $lastAddedText = $("#griddiv .animated-text").last();
 
 
-            var trimmedText = $lastAddedText.text().trim();
+            var trimmedText = $lastAddedText.text().trim().toUpperCase();
 
 
-            if (trimmedText.length <= 20) {
+            if (trimmedText.length <= 12) {
 
                 $lastAddedText.removeClass("animated-text");
                 $lastAddedText.closest(".text-container").removeClass("text-container");
             }
             var $lastAddedArtistText = $("#griddiv .artist-text").last();
-            var trimmedArtistText = $lastAddedArtistText.text().trim();
-            if (trimmedArtistText.length <= 15) {
+            var trimmedArtistText = $lastAddedArtistText.text().trim().toUpperCase();
+            if (trimmedArtistText.length <= 12) {
                 $lastAddedArtistText.removeClass("animated-text");
                 $lastAddedArtistText.closest(".text-container").removeClass("text-container");
             }
@@ -867,21 +912,25 @@
     </script>
     <script>
         function getPL(plId, pltitle) {
-            $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+
             $.ajax({
                 url: '{% url "getPlaylist" %}',
                 data: { 'query': plId },
                 success: function (response) {
+                    $('html, body').css(
+                        'background-color', 'transparent'
+                    );
+                    $('body').addClass("bg-gradient-to-r from-[#121212] from-5% via-[#1e1e1e] via-20% via-[#5398C9] via-50% to-[#00438F] to-90%");
                     $("#allelements1").remove();
                     $("#lchild").remove("bg-transparent");
                     $("#lchild").addClass("gradnav");
                     $("#allelements").empty();
                     $("#allelements").append(
                         `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
-                            <div class="text-white poppins-regular">
+                            <div class="montserrat ">
                                 Results for 
                             </div>
-                            <div class="text-sky-600 corey-font">
+                            <div class="lora font-bold">
                                 ${pltitle}
                             </div>
     
@@ -892,7 +941,7 @@
 
                     $("#allelements").append(
                         `
-                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-8">
+                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 ">
                             </div>
                             `
                     )
@@ -906,21 +955,27 @@
     </script>
     <script>
         function getAL(albumId, altitle) {
-            $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
+
+            
+
             $.ajax({
                 url: '{% url "getAlbum" %}',
                 data: { 'query': albumId },
                 success: function (response) {
+                    $('html, body').css(
+                        'background-color', 'transparent'
+                    );
+                    $('body').addClass("bg-gradient-to-r from-[#121212] from-5% via-[#1e1e1e] via-20% via-[#5398C9] via-50% to-[#00438F] to-90%");
                     $("#allelements1").remove();
                     $("#lchild").remove("bg-transparent");
                     $("#lchild").addClass("gradnav");
                     $("#allelements").empty();
                     $("#allelements").append(
                         `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
-                            <div class="text-white poppins-regular">
+                            <div class="montserrat">
                                 Results for 
                             </div>
-                            <div class="text-sky-600 corey-font">
+                            <div class="lora font-bold">
                                 ${altitle}
                             </div>
     
@@ -931,7 +986,7 @@
 
                     $("#allelements").append(
                         `
-                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-8">
+                            <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 mt-2">
                             </div>
                             `
                     )
@@ -948,25 +1003,42 @@
             const heads = { 1: "Singles", 2: "Songs", 3: "Albums" }
             Object.entries(heads).forEach(([k, v]) => {
 
-                $("#allelements").append(
-                    `
-                            <div class="text-white flex w-[98%] text-[30px] justify-between">
-                                <div class = "bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500  bg-clip-text text-transparent leading-normal montserrat">${v}</div>
-                                <div id="scrollnavbtn" class="flex">
-                                    <button class="hover:scale-110" onclick="horizontalscroll(true,'artistshead${k}')">
-                                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
-                                    </button>
-                                    <button class="hover:scale-110" onclick="horizontalscroll(false,'artistshead${k}')">
-                                        <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
-                                    </button>
+                if(k==2){
+                    $("#allelements").append(
+                        `
+                                <div class="text-white flex w-[98%] text-[30px] justify-between pt-4">
+                                    <div class = "text-white montserrat font-semibold">${v}</div>
                                 </div>
-                            </div>
-                            <div id="artistshead${k}"
-                            class="scrollbar   sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%]  grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
-                                
-                            </div>
-                                `
-                );
+                                <div id="artistshead${k}"
+                                class="pt-4 space-x-5">
+                                    
+                                </div>
+                                    `
+                    );
+                }
+                else
+                {
+
+                    $("#allelements").append(
+                        `
+                                <div class="text-white flex w-[98%] text-[30px] justify-between pt-4">
+                                    <div class = "text-white montserrat font-semibold">${v}</div>
+                                    <div id="scrollnavbtn" class="flex">
+                                        <button class="hover:scale-110" onclick="horizontalscroll(true,'artistshead${k}')">
+                                            <div class="m-1"><img src="{% static 'mainapp/homepageassets/larrow.svg' %}" alt=""></div>
+                                        </button>
+                                        <button class="hover:scale-110" onclick="horizontalscroll(false,'artistshead${k}')">
+                                            <div class="m-1"><img src="{% static 'mainapp/homepageassets/rarrow.svg' %}" alt=""></div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="artistshead${k}"
+                                class="scrollbar   sm:hover:overflow-x-scroll sm:overflow-hidden pt-4 w-[98%]  grid grid-flow-col auto-cols-auto  scroll-smooth space-x-5">
+                                    
+                                </div>
+                                    `
+                    );
+                }
             });
         }
     </script>
@@ -976,19 +1048,21 @@
                 url: '{% url "getArtist" %}',
                 data: { 'query': artistId },
                 success: function (response) {
-
+                    $('html, body').css(
+                        'background-color', 'transparent'
+                    );
+                    $('body').addClass("bg-gradient-to-r from-[#121212] from-5% via-[#1e1e1e] via-20% via-[#5398C9] via-50% to-[#00438F] to-90%");
                     $("#grad-control").removeClass("gradnav1");
-                    $('body').addClass("bg-gradient-to-r from-black via-gray-900 via-gray-800 via-gray-900 to-black");
                     $("#allelements1").remove();
                     $("#lchild").remove("bg-transparent");
                     $("#lchild").addClass("gradnav");
                     $("#allelements").empty();
                     $("#allelements").append(
                         `<div class="text-white flex space-x-3  w-[98%] text-[30px] mt-20  mb-2">
-                            <div class="text-white poppins-regular">
+                            <div class="montserrat">
                                 Results for 
                             </div>
-                            <div class="text-sky-600 montserrat">
+                            <div class="lora font-bold">
                                 ${artitle}
                             </div>
     
@@ -1283,12 +1357,14 @@
     </script>
     <script>
         var originalElements = "";
-        var topelements="";
+        var topelements = "";
         function placeLyrics(songId) {
+            originalElements = "";
+            var topelements = "";
             if (!originalElements) {
                 originalElements = $("#allelements").children().detach();
                 if ($("#allelements1").length) {
-                    
+
                     topelements = $("#allelements1").children().detach();
                 }
             }
@@ -1299,11 +1375,11 @@
                     "songId": songId
                 },
                 success: function (response) {
-                  
 
-               
+
+
                     $("#allelements").append(`
-                    <div class="flex mt-20">
+                    <div class="flex mt-20 ">
                         <div class="relative w-[70%] h-[500px] flex justify-center items-center  text-center">
                             <div class="absolute inset-0 bg-cover bg-center filter blur-lg" style="background-image: url('${response.lyrics.thumbnail}');"></div>
                             <div class="relative w-full h-full overflow-y-auto text-white mt-4">
@@ -1321,19 +1397,78 @@
                     </div>
                     `);
 
-                    related_songs.forEach(song => {
-                        $("#upnext-container").append(`
+                    if (related_songs) {
+                        placeUpNext();
+                    }
+                    else {
+
+                        for (let i = 0; i < 10; i++) {
+                            $("#upnext-container").append(`
                         <button class="flex space-x-5 p-1"  onclick="">
+                            <div class="w-[55px] h-[55px] bg-gray-800 animate-pulse shadow-lg rounded-md">
+                               
+                            </div>
+                            <div>
+                                <div class="h-2 w-24 rounded bg-gray-700 animate-pulse mt-1">
+                                    
+                                </div>
+                                <div class="h-2 w-20 rounded bg-gray-700 animate-pulse mt-3">
+                                   
+                                </div>
+                            </div>
+                        </button>
+                        `);
+
+                        }
+
+
+
+
+                    }
+                }
+            })
+        }
+        function restoreOriginalElements() {
+            if (originalElements) {
+                $("#allelements").empty().append(originalElements);
+              
+                if ($("#allelements1").length) {
+
+                    $("#allelements1").empty().append(topelements);
+                }
+            }
+        }
+    </script>
+    <script>
+        function chooseUpNext(index_num) {
+            curr_song_index = index_num + 1;
+            changesong();
+
+        }
+    </script>
+    <script>
+        function placeUpNext() {
+            $("#upnext-container").empty();
+            $("#upnext-container").append(`
+            <div class="sticky text-lg text-white">
+                                <div>Up Next</div>
+                                <hr>
+
+                            </div>`);
+            related_songs.forEach((song, i) => {
+                $("#upnext-container").append(`
+                
+                        <button class="flex space-x-5 p-1"  onclick="chooseUpNext(${i})">
                             <div class="border w-[55px] h-[55px]">
                                 <img src="${song.thumbnail}" alt="">
                             </div>
                             <div class="text-white">
-                                <div class="h-[30px] font-bold corey-font text-container title-text">
+                                <div class="font-bold raleway text-container title-text text-start">
                                     <span class="animated-text">
                                         ${song.title}
                                     </span>
                                 </div>
-                                <div class="h-[25px]  font-semibold text-red-600 text-containe artist-text">
+                                <div class="mt-1 font-semibold lora text-containe artist-text text-start">
                                     <span class="animated-text">
                                         ${song.author}
                                     </span>
@@ -1341,32 +1476,92 @@
                             </div>
                         </button>
                         `);
-                        var $lastAddedText = $("#upnext-container .title-text").last();
-                        var trimmedText = $lastAddedText.text().trim();
-                        if (trimmedText.length <= 25) {
+                var $lastAddedText = $("#upnext-container .title-text").last();
+                var trimmedText = $lastAddedText.text().trim();
+                if (trimmedText.length <= 35) {
 
+                    $lastAddedText.removeClass("animated-text");
+                    $lastAddedText.closest(".text-container").removeClass("text-container");
+                }
+
+                var $lastAddedArtistText = $("#upnext-container .artist-text").last();
+                var trimmedArtistText = $lastAddedArtistText.text().trim();
+                if (trimmedArtistText.length <= 35) {
+                    $lastAddedArtistText.removeClass("animated-text");
+                    $lastAddedArtistText.closest(".text-container").removeClass("text-container");
+                }
+            });
+        }
+    </script>
+    <script>
+        function getMood(moodplID, moodtitle) {
+            $.ajax({
+                url: '{% url "getMoodpl" %}',
+                data: { 'query': moodplID },
+                success: function (response) {
+                    $('html, body').css(
+                        'background-color', 'transparent'
+                    );
+                    $('body').addClass("bg-gradient-to-r from-[#121212] from-5% via-[#1e1e1e] via-20% via-[#5398C9] via-50% to-[#00438F] to-90%");
+                    $("#allelements1").remove();
+                    $("#lchild").remove("bg-transparent");
+                    $("#lchild").addClass("gradnav");
+                    $("#allelements").empty();
+                    $("#allelements").append(
+                        `<div class="text-white flex space-x-2  w-[98%] text-[30px] mt-20  mb-2">
+                                <div class="text-white montserrat">
+                                    Results for 
+                                </div>
+                                <div class="font-bold lora">
+                                    ${moodtitle}
+                                </div>
+        
+                            </div>
+                            
+                            `
+                    );
+    
+                    $("#allelements").append(
+                        `
+                                <div id="griddiv" class="w-full  grid grid-cols-6 gap-y-2 ">
+                                </div>
+                                `
+                    )
+                    response.mooddata.forEach(item => {
+    
+                        $("#griddiv").append(
+                            `
+                        
+                            <button class="flex flex-col my-4 hover:scale-110" playlistId="${item.playlistid}" onclick = "getPL(this.getAttribute('playlistId'),'${item.title}')">
+                                <div class= "w-40 ">
+                                    <img class="" src="${item.thumbnail}" alt="">
+                                </div>
+                                <div class="text-white">
+                                    <div class="text-container w-[170px]">
+                                        <span class="animated-text">
+                                            ${item.title}
+                                        </span>
+                                    </div>
+                                   
+                                </div>
+                            </button>
+                       
+                        `
+                        );
+                        var $lastAddedText = $("#griddiv .animated-text").last();
+    
+    
+                        var trimmedText = $lastAddedText.text().trim();
+    
+    
+                        if (trimmedText.length <= 20) {
+    
                             $lastAddedText.removeClass("animated-text");
                             $lastAddedText.closest(".text-container").removeClass("text-container");
                         }
-
-                        var $lastAddedArtistText = $("#upnext-container .artist-text").last();
-                        var trimmedArtistText = $lastAddedArtistText.text().trim();
-                        if (trimmedArtistText.length <= 25) {
-                            $lastAddedArtistText.removeClass("animated-text");
-                            $lastAddedArtistText.closest(".text-container").removeClass("text-container");
-                        }
                     });
                 }
-            })
-        }
-        function restoreOriginalElements() {
-            if (originalElements) {
-                $("#allelements").empty().append(originalElements);
-                if ($("#allelements1").length) {
-                    
-                    $("#allelements1").empty().append(topelements);
-                }
-            }
+            });
         }
     </script>
     {% block script %} {% endblock script %}

@@ -1,7 +1,7 @@
-html,
-body {
+html, body {
     /* @apply bg-gradient-to-br from-gray-900 from-10% via-gray-800 via-15% to-lime-300 to-80% h-[3000px]; */
     background-color: #121212;
+    height: 100%;
 }
 
 .faster-one {

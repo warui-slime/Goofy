@@ -136,7 +136,7 @@
     $("#grad-control").addClass("gradnav1");
     $("#grad-control").append(`
         <div id="allelements1" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
-        <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-2 mt-20">
+        <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-3 mt-20">
         </div>
         <div class="flex-col mt-10 ">
             <div class="text-white flex w-[98%] text-[30px] justify-between ">
@@ -178,7 +178,14 @@
             type: 'GET',
             url: "{% url 'getHomedata' %}",
             success: function (response) {
-
+                response.ribbon.forEach(item=>{
+                    console.log(item);
+                    $('#ribbonbox').append(`
+                    <button class=" mr-2 text-white text-lg bg-[#1e1e1e]  hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6] hover:shadow-lg hover:shadow-white hover:scale-110"  onclick = "getMood('${item.params}','${item.title}')">
+                        <div class="px-5 py-1 text-xl">${item.title}</div>
+                    </button>
+                    `);
+                });
                 $('#parentscrolldiv1').empty();
                 response.heading1.forEach(function (item) {
 
@@ -215,7 +222,7 @@
 
                     $('#parentscrolldiv2').append(
                         `
-                            <button class="hover:scale-110s" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.artist}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
+                            <button class="hover:scale-110" songId = "${item.videoId}" songname="${item.title}" songauthor="${item.artist}" thumbnail="${item.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
                                 <div class="h-36 w-40 ">
                                     <img src="${item.thumbnail}" alt="">
                                 </div>
