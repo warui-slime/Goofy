@@ -25,7 +25,7 @@
         </div>
 
         <div id="playlistgrid"
-            class="scrollbar  sm:hover:overflow-x-scroll sm:overflow-hidden h-64  w-[98%] pt-4 pl-3 scroll-smooth space-x-5 ">
+            class="scrollbar sm:hover:overflow-x-scroll sm:overflow-hidden h-64 w-[98%] pt-4 pl-3 scroll-smooth space-x-5">
 
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="hover:scale-110">
                 <div class="w-40 ">
@@ -48,13 +48,13 @@
                 <div class="relative bg-white rounded-lg shadow dark:bg-black">
                     <!-- Modal header -->
                     <div class="p-4 md:p-5 border-b rounded-t border-black dark:border-white">
-                        <h3 class="text-lg font-semibold text-black dark:text-white">
+                        <h3 id="crud-title" class="text-lg font-semibold text-black dark:text-white">
                             New Playlist
                         </h3>
                     </div>
 
                     <!-- Modal body -->
-                    <form class="p-4 md:p-5" method="post" action="{% url 'createPlaylist' %}">
+                    <form id="playlist-form" class="p-4 md:p-5" method="post" action="{% url 'createPlaylist' %}">
                         {% csrf_token %}
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2">
@@ -72,8 +72,8 @@
                                     placeholder="Write playlist description here"></textarea>
                             </div>
                         </div>
-                     
-                        <button type="submit"
+
+                        <button id="crud-btn" type="submit"
                             class="bg-white text-black hover:bg-black hover:border-white hover:border-r-2 hover:text-white focus:ring-4 focus:outline-none focus:ring-white rounded-lg border border-black text-sm font-medium px-5 py-2.5 focus:z-10">
                             Create
                         </button>
@@ -92,11 +92,11 @@
 {% endblock content %}
 {% block script %}
 <script>
-    $('#libimg').attr("src","{% static 'mainapp/homepageassets/library1.svg' %}");
-    $('#homeimg').attr("src","{% static 'mainapp/homepageassets/home2.svg' %}");
-    $('#exploreimg').attr("src","{% static 'mainapp/homepageassets/explore2.svg' %}");
-    $('#likedsongsimg').attr("src","{% static 'mainapp/homepageassets/mylikes2.svg' %}");
-    $('#profileimg').attr("src","{% static 'mainapp/homepageassets/profile2.svg' %}");
+    $('#libimg').attr("src", "{% static 'mainapp/homepageassets/library1.svg' %}");
+    $('#homeimg').attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
+    $('#exploreimg').attr("src", "{% static 'mainapp/homepageassets/explore2.svg' %}");
+    $('#likedsongsimg').attr("src", "{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src", "{% static 'mainapp/homepageassets/profile2.svg' %}");
 
 
 
@@ -116,16 +116,26 @@
             response.playlists.forEach(playlist => {
                 $("#playlistgrid").append(
                     `
-                    <button class="hover:scale-110" playlistId = "${playlist.playlist_id}"">
-                        <div class="w-40 ">
-                            <img src="{% static 'mainapp/libraryassets/songdp.svg' %}" alt="">
-                        </div>
-                        <div class="text-white w-40 pt-1 ">
-                            <span class="text-white w-40 ">
-                                ${playlist.name}
-                            </span>
-                        </div>
-                    </button>
+                <button class="relative group hover:scale-110 w-40" playlist_id=${playlist.playlist_id} onclick="showPlaylist('${playlist.playlist_id}')">
+        <div class="relative">
+            <img class="group-hover:opacity-50 w-full" src="{% static 'mainapp/libraryassets/songdp.svg' %}" alt="">
+            
+            
+                
+                <img class="absolute bottom-2 right-2 w-6 h-6 hidden group-hover:block" src="{% static 'mainapp/libraryassets/deletepic1.svg' %}" alt="Delete" onclick="event.stopPropagation(); deletePlaylist('${playlist.playlist_id}')">
+             
+                <img class="absolute bottom-2 left-2 w-6 h-6 hidden group-hover:block" src="{% static 'mainapp/libraryassets/edit.svg' %}" alt="edit" onclick="event.stopPropagation(); editPlaylist('${playlist.playlist_id}');">
+                  
+        </div>
+        
+        <div class="text-white w-full pt-1">
+            <span class="text-white">
+                ${playlist.name}
+            </span>
+        </div>
+    </button>
+
+
                         `
                 )
             });
@@ -133,18 +143,138 @@
     });
 </script>
 <script>
+    let modal;
     document.addEventListener('DOMContentLoaded', function () {
         const modalToggle = document.querySelector('[data-modal-toggle="crud-modal"]');
         const modalClose = document.querySelector('[data-modal-close="crud-modal"]');
-        const modal = document.getElementById('crud-modal');
-
+        modal = document.getElementById('crud-modal');
         modalToggle.addEventListener('click', function () {
             modal.classList.toggle('hidden');
         });
 
         modalClose.addEventListener('click', function () {
             modal.classList.toggle('hidden');
+            $('#playlist-form').attr('action', '{% url "createPlaylist" %}');
+            $("#crud-title").empty();
+            $("#crud-title").append("Create Playlist");
+            $("#crud-btn").empty();
+            $("#crud-btn").append("Create");
         });
     });
+</script>
+<script>
+    function deletePlaylist(playlist_id) {
+        $.post({
+            url: "{% url 'deletePlaylist' %}",
+            data: {
+                "playlist_id": playlist_id,
+                'csrfmiddlewaretoken': getCSRFToken()
+            },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+</script>
+<script>
+    let playlist_songs=[];
+    function showPlaylist(playlist_id) {
+        $.get({
+            url: "{% url 'getPlaylistData' %}",
+            data: {
+                "playlist_id": playlist_id
+            },
+            success: function (response) {
+                isplaylist=true;
+                $('html, body').css(
+                    'background-color', 'transparent'
+                );
+                $('body').addClass("bg-gradient-to-r from-[#0f0f0f] from-5% via-[#1a1a1a] via-20% via-[#3e6b8f] via-50% to-[#002b5c] to-90%");
+                $("#allelements1").remove();
+                $("#lchild").remove("bg-transparent");
+                $("#lchild").addClass("gradnav");
+                $("#allelements").empty();
+                $("#allelements").append(
+                    `<div class="text-white  flex w-[98%] text-[30px] mt-12  space-x-2 ">
+                    
+                </div>
+                <hr class="my-2 mr-2 bg-white">
+                    
+                    `)
+                playlist_songs=response.playlist.song_details.songsdetail;
+                response.playlist.song_details.songsdetail.forEach(song => {
+                    // placeResultData({ 'videoId': song.songId, 'title': song.title, 'author': song.author, "thumbnail": song.thumbnail })
+                    $("#allelements").append(`
+    <div class="flex justify-between poppins-regular">
+        <button class="flex space-x-5 libsong" songId="${song.songId}" songname="${song.title}" songauthor="${song.author}" thumbnail="${song.thumbnail}" onclick="loadSong('${song.songId}', '${song.title}', '${song.author}', '${song.thumbnail}')">
+            <div class="border">
+                <img class="h-[60px] w-[60px]" src="${song.thumbnail}" alt="">
+            </div>
+            <div class="text-white">
+                <div class="h-[30px] font-bold raleway">
+                    ${song.title}
+                </div>
+                <div class="h-[25px] w-[375px] font-semibold text-white lora">
+                    ${song.author}
+                </div>
+            </div>
+        </button>
+        <div class="mr-7 pt-3 flex items-center justify-center space-x-3">
+            <!-- Like Button -->
+            <button class="likebtn pr-4" songId="${song.songId}" onclick="likesong(this)">
+                <img class="likeimg" src="{% static 'mainapp/player/playerlikesong.svg' %}" alt="">
+            </button>
+        
+            <div class="relative">
+                <button class="playlist-btn flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-600" onclick="removeSong('${song.songId}','${playlist_id}')">
+                    <img class="playlist-icon" src="{% static 'mainapp/libraryassets/removeicon.svg' %}" alt="Add to Playlist">
+                </button>
+                
+            </div>
+        </div>
+    </div>
+    <hr class="my-2 mr-2 bg-white">
+`);
+                });
+                showlikes();
+            }
+        });
+    }
+</script>
+<script>
+    function removeSong(songId, playlist_id) {
+        $.ajax({
+            url: '{% url "updatePlaylist" %}',
+            type: 'POST',
+
+            data: {
+                "song_id": songId,
+                "playlist_id": playlist_id,
+                "is_delete": true,
+                'csrfmiddlewaretoken': getCSRFToken(),
+            },
+            success: function (response) {
+                $('.libsong[songId="' + songId + '"]').parent().next().remove();
+                $('.libsong[songId="' + songId + '"]').parent().remove();
+                showNotification('Song removed from playlist successfully!');
+            },
+            error: function (error) {
+                showNotification('An error occurred while removing the song!', 'error');
+            }
+        });
+    }
+</script>
+<script>
+    function editPlaylist(playlist_id) {
+        $("#playlist-form").append(`
+            <input id="playlist_id_input" type="hidden" name="playlist_id" id="playlist_id" value="${playlist_id}">
+        `);
+        $('#playlist-form').attr('action', '{% url "updatePlaylist" %}');
+        $("#crud-title").empty();
+        $("#crud-title").append("Update Playlist");
+        $("#crud-btn").empty();
+        $("#crud-btn").append("Update");
+        modal.classList.toggle("hidden");
+    }
 </script>
 {% endblock script %}

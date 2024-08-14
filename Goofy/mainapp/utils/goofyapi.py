@@ -82,7 +82,7 @@ class Goofyapi():
 
     def getSongdetails(self,songIds):
         ins = FetchMusicDetails()
-        return {'likedata':asyncio.run(ins.get_song_details(songIds))}
+        return {'songsdetail':asyncio.run(ins.get_song_details(songIds))}
     
     def getRelated(self,query):
         ins = Relatedcontent()

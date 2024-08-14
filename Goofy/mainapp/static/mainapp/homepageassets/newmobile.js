@@ -1,6 +1,7 @@
 
 
 function lnav() {
+    document.getElementById("goofy-ham").classList.toggle("hidden");
     document.getElementById("leftnav").classList.toggle("hidden");
     const navelements = ["home", "explore", "library", "likedsongs","profile"];
     for (const i of navelements) {
@@ -39,8 +40,8 @@ function lnav() {
         document.getElementById("hel").classList.replace("*:ml-3", "*:ml-2");
         document.getElementById("hrnav").classList.replace("mx-5","mx-1.5");
         document.getElementById("profilebox").classList.replace("w-[90%]", "w-[80%]");
-        document.getElementById("profilebox").classList.replace("pl-2", "pl-[10px]");
-        document.getElementById("profilebox").classList.replace("ml-3", "ml-2");
+        // document.getElementById("profilebox").classList.replace("pl-2", "pl-[10px]");
+        // document.getElementById("profilebox").classList.replace("ml-3", "ml-2");
        
 
        
@@ -77,8 +78,8 @@ function lnav() {
         document.getElementById("hel").classList.replace("*:ml-2", "*:ml-3");
         document.getElementById("hrnav").classList.replace("mx-1","mx-5");
         document.getElementById("profilebox").classList.replace("w-[80%]", "w-[90%]");
-        document.getElementById("profilebox").classList.replace("pl-[10px]", "pl-2");
-        document.getElementById("profilebox").classList.replace("ml-2", "ml-3");
+        // document.getElementById("profilebox").classList.replace("pl-[10px]", "pl-2");
+        // document.getElementById("profilebox").classList.replace("ml-2", "ml-3");
 
         
         expanded = true;
@@ -172,7 +173,7 @@ function clickmanage(event) {
     // Close the playlist dropdown
     document.querySelectorAll('.playlist-dropdown').forEach(dropdown => {
         const button = dropdown.previousElementSibling;
-        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+        if (dropdown.contains(event.target) || !button.contains(event.target)) {
             dropdown.classList.add('hidden');
         }
     });

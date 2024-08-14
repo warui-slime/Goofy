@@ -60,9 +60,9 @@
         url: "{% url 'getlikedsongs' %}",
         type: "GET",
         success: function (response) {
-            if (response.likedata) {
+            if (response.songsdetail) {
                 $("#liked-head").addClass("hidden");
-                response.likedata.forEach(song => {
+                response.songsdetail.forEach(song => {
                     $("#likegrid").append(`
                     <button class="hover:scale-110" songId = "${song.songId}" songname="${song.title}" songauthor="${song.author}" thumbnail="${song.thumbnail}" onclick="loadSong(this.getAttribute('songId'),this.getAttribute('songname'),this.getAttribute('songauthor'),this.getAttribute('thumbnail'))">
                     <div class="w-40 ">

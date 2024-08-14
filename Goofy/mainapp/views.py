@@ -171,7 +171,7 @@ def getLikedata(request:HttpRequest):
 
 def getPlaylists(request: HttpRequest):
     if request.user.is_authenticated:
-        playlists = Playlist.objects.filter(user=request.user)
+        playlists = Playlist.objects.filter(user=request.user).order_by('-created_at')
         playlists_data = [{
             'name': playlist.name,
             'description': playlist.description,
@@ -218,22 +218,56 @@ def updatePlaylist(request:HttpRequest):
         name = request.POST.get('name',playlist.name)
         description = request.POST.get('description', '')
         new_song_id = request.POST.get('song_id')  # Default to existing song_ids if not provided
+        is_delete = request.POST.get("is_delete")
 
         if name:
             playlist.name = name
         if description:
             playlist.description = description
-            
-        if new_song_id:
+
+        if new_song_id and is_delete:
+            songIds = playlist.song_ids.copy()
+            songIds.remove(new_song_id)
+            playlist.song_ids = songIds
+        
+        elif new_song_id:
             # Append new song IDs to the existing ones, ensuring no duplicates
             playlist.song_ids = list(set(playlist.song_ids + [new_song_id]))
-
+       
         try:
             playlist.clean()  # Validate the data
             playlist.save()  # Save the updated playlist
-            return JsonResponse({'message': 'Playlist updated successfully'})
+            if new_song_id:
+                return JsonResponse({'message': 'Playlist updated successfully'})
+            else:
+                return redirect("library")
         except ValidationError as e:
             return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+
+def deletePlaylist(request:HttpRequest):
+    if request.user.is_authenticated and request.method=="POST":
+        playlist = get_object_or_404(Playlist, playlist_id=request.POST.get("playlist_id"), user=request.user)
+        playlist.delete()
+        return redirect('library')
+
+
+def getPlaylistData(request: HttpRequest):
+    if request.user.is_authenticated and request.method=="GET":
+        playlist = get_object_or_404(Playlist, playlist_id=request.GET.get("playlist_id"), user=request.user)
+        inst = goofyapi.Goofyapi()
+        pldata = inst.getSongdetails(playlist.song_ids)
+      
+        playlists_data = {
+            'name': playlist.name,
+            'description': playlist.description,
+            'song_details': pldata,
+            'playlist_id': playlist.playlist_id,
+            'created_at': playlist.created_at,
+            'updated_at': playlist.updated_at,
+        } 
+        return JsonResponse({'playlist': playlists_data})
     return JsonResponse({'error': 'Unauthorized'}, status=401)
 
 
