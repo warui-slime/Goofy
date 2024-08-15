@@ -3,7 +3,8 @@ from . import views as goofyviews
 
 
 urlpatterns = [
-    path("",goofyviews.home,name="home"),
+    path("",goofyviews.index,name="index"),
+    path("home/",goofyviews.home,name="home"),
     path("getHomedata/",goofyviews.getHomedata,name="getHomedata"),
     path("explore/",goofyviews.explore,name="explore"),
     path("mylikes/",goofyviews.likes,name="mylikes"),

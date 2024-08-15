@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <title>{% block title %} {% endblock title %}</title>
+    <title>Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap"
@@ -33,7 +33,7 @@
                         <img src="{% static 'mainapp/homepageassets/cross.svg' %}" alt="">
                     </button>
                     <button id="ham2" class="hidden sm:block" onclick="lnav()">
-                        
+
                         <img src="{% static 'mainapp/homepageassets/hamburger1.svg' %}" alt="">
                     </button>
                     <div id="goofy-ham" class="text-white montserrat pt-1 hidden mr-16 text-2xl">
@@ -45,45 +45,45 @@
 
                     <div id="hel"
                         class="*:my-2 *:flex *:space-x-7 *:rounded-md *:items-center *:h-12 *:w-[80%] *:ml-[0.4rem] *:pl-[0.85rem]">
-                        <a id="homebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
-                            href="{% url 'home' %}">
+                        <button id="homebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            onclick="setHomePage()">
                             <div title="Home"><img id="homeimg" src="{% static 'mainapp/homepageassets/home1.svg' %}"
                                     alt=""></div>
                             <div id="home" class="text-center pt-0.5 sm:hidden">Home</div>
-                        </a>
-                        <a id="explorebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
-                            href="{% url 'explore' %}">
+                        </button>
+                        <button id="explorebox" class="hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            onclick="setExplorePage()">
                             <div title="Explore"><img id="exploreimg"
                                     src="{% static 'mainapp/homepageassets/explore2.svg' %}" alt="">
                             </div>
                             <div id="explore" class="text-center pt-0.5 sm:hidden">Explore</div>
-                        </a>
-                        <a id="librarybox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
-                            href="{% url 'library' %}">
+                        </button>
+                        <button id="librarybox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            onclick="setLibraryPage()">
                             <div title="Library"><img id="libimg"
                                     src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
                             </div>
                             <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
-                        </a>
-                        <a id="likedsongsbox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
-                            href="{% url 'mylikes' %}">
+                        </button>
+                        <button id="likedsongsbox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                            onclick="setLikePage()">
                             <div title="My Likes"><img id="likedsongsimg"
                                     src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
                             </div>
                             <div id="likedsongs" class="text-center pt-0.5 sm:hidden">My Likes</div>
-                        </a>
+                        </button>
                     </div>
 
                     <hr id="hrnav" class="mx-1 border-1">
 
-                    <a id="profilebox"
+                    <button id="profilebox"
                         class="mt-2 h-[50px] flex rounded-[10px] hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9] w-[80%] ml-2 pl-[0.7rem] space-x-7 items-center"
-                        href="{% url 'profile' %}">
+                        onclick="setProfilePage()">
                         <div>
                             <img id="profileimg" src="{% static 'mainapp/homepageassets/profile2.svg' %}" alt="">
                         </div>
                         <div id="profile" class="text-center pt-1 sm:hidden">Profile</div>
-                    </a>
+                    </button>
                 </div>
                 <div class="h-7"></div>
             </div>
@@ -145,8 +145,10 @@
 
     </div>
 
+    <div id="main-content">
 
-    {% block content %} {% endblock content %}
+        {% block content %} {% endblock content %}
+    </div>
     <!-- Notification Container -->
     <div id="notification-container" class="notification-container"></div>
 
@@ -690,7 +692,7 @@
         });
     </script>
     <script>
-        function getBlob(song_dict,ispl=false) {
+        function getBlob(song_dict, ispl = false) {
 
             if (ispl) {
                 $.get({
@@ -700,17 +702,17 @@
                     xhrFields: {
                         responseType: 'blob' // This is crucial to handle the file as a blob
                     },
-    
+
                     success: function (response2) {
-    
+
                         var blob = new Blob([response2], { type: 'audio/m4a' });
                         var url = URL.createObjectURL(blob);
- 
+
                         alltracks.push({ "songId": song_dict.songId, "songname": song_dict.title, "author": song_dict.author, "thumbnail": song_dict.thumbnail, "blob": url });
                     }
                 });
             }
-            else{
+            else {
 
                 $.get({
                     url: '{% url "getmusicblob" %}',
@@ -719,12 +721,12 @@
                     xhrFields: {
                         responseType: 'blob' // This is crucial to handle the file as a blob
                     },
-    
+
                     success: function (response2) {
-    
+
                         var blob = new Blob([response2], { type: 'audio/m4a' });
                         var url = URL.createObjectURL(blob);
-    
+
                         alltracks.push({ "songId": song_dict.videoId, "songname": song_dict.title, "author": song_dict.author, "thumbnail": song_dict.thumbnail, "blob": url });
                     }
                 });
@@ -738,7 +740,7 @@
             if (isplaying) {
                 playpause();
             }
-            $("#allelements").addClass("pb-[80px]")
+            $("#main-content").addClass("pb-[80px]")
             $("#player-likebtn").attr("songId", videoId);
             $("#player").addClass("animate-pulse");
             $("#player").removeClass("hidden");
@@ -817,13 +819,13 @@
                         });
                     }
                     else {
-                        
 
-                        playlist_songs.forEach((i,j)=>{
-              
-                            if (i.songId==videoId) {
 
-                                curr_playlist_index=j;
+                        playlist_songs.forEach((i, j) => {
+
+                            if (i.songId == videoId) {
+
+                                curr_playlist_index = j;
                             }
                         });
 
@@ -840,16 +842,16 @@
                                 responseType: 'blob'
                             },
                             success: function (response) {
-                     
+
                                 var blob = new Blob([response], { type: 'audio/m4a' });
                                 var url = URL.createObjectURL(blob);
                                 alltracks.push({ "songId": upnext_playlist[0].songId, "songname": upnext_playlist[0].title, "author": upnext_playlist[0].author, "thumbnail": upnext_playlist[0].thumbnail, "blob": url })
-                                upnext_playlist.slice(1).forEach(song=>{
+                                upnext_playlist.slice(1).forEach(song => {
 
-                                    getBlob(song,ispl=true);
+                                    getBlob(song, ispl = true);
                                 });
                                 if (islyrics) {
-                                    
+
                                     placeUpNext();
                                 }
                             }
@@ -868,6 +870,8 @@
             $("#lchild").remove("bg-transparent");
             $("#lchild").addClass("gradnav");
             $("#allelements").empty();
+            $("#allelements").removeClass("pt-8");
+            $("#allelements").addClass("pt-9");
             $("#allelements").append(
                 `<div class="text-white  flex w-[98%] text-[30px] mt-12  space-x-2 ">
                     <div class="montserrat">Results for </div>
@@ -1527,9 +1531,9 @@
     </script>
     <script>
         function placeUpNext() {
-            let upnextarr=related_songs;
+            let upnextarr = related_songs;
             if (isplaylist) {
-                upnextarr=playlist_songs.slice(curr_playlist_index+1);
+                upnextarr = playlist_songs.slice(curr_playlist_index + 1);
             }
             $("#upnext-container").empty();
             $("#upnext-container").append(`
@@ -1647,7 +1651,82 @@
             });
         }
     </script>
-    {% block script %} {% endblock script %}
+    <script>
+        function setHomePage() {
+            document.title="Home";
+            $.ajax({
+                url: "{% url 'home' %}",
+                type: "GET",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    $("#main-content").html(response);
+
+                }
+            });
+        }
+        function setExplorePage() {
+            document.title="Explore";
+            $.ajax({
+                url: "{% url 'explore' %}",
+                type: "GET",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    $("#main-content").html(response);
+
+                }
+            });
+        }
+        function setLibraryPage() {
+            document.title="Library";
+            $.ajax({
+                url: "{% url 'library' %}",
+                type: "GET",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    $("#main-content").html(response);
+
+                }
+            });
+        }
+        function setLikePage() {
+            document.title="Mylikes";
+            $.ajax({
+                url: "{% url 'mylikes' %}",
+                type: "GET",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    $("#main-content").html(response);
+
+                }
+            });
+        }
+        function setProfilePage() {
+            document.title="My Profile";
+            $.ajax({
+                url: "{% url 'profile' %}",
+                type: "GET",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    $("#main-content").html(response);
+
+                }
+            });
+        }
+    </script>
+    <script>
+        setHomePage();
+    </script>
+
 
 
 </body>

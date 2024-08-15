@@ -3,12 +3,18 @@ from .utils import goofyapi
 from django.http import JsonResponse,HttpResponseForbidden,FileResponse,HttpRequest
 from .models import LikedSong,Playlist,Image
 from django.core.exceptions import ValidationError
-from django.core.files.base import ContentFile
+
 
 import os
 
 
 # Create your views here.
+
+def index(request:HttpRequest):
+    if request.user.is_authenticated:
+        return render(request,'mainapp/base.html')
+    else:
+        return redirect('login_view')
 def home(request):
     if request.user.is_authenticated:
         return render(request,'mainapp/home.html')
@@ -16,7 +22,7 @@ def home(request):
         return redirect('login_view')
     
 
-def getHomedata(request):
+def getHomedata(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.get_homepage_sync()
@@ -24,19 +30,19 @@ def getHomedata(request):
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
 
-def explore(request):
+def explore(request:HttpRequest):
     if request.user.is_authenticated:
         return render(request,'mainapp/explore.html')
     
     return redirect('login_view')
 
-def likes(request):
+def likes(request:HttpRequest):
     if request.user.is_authenticated:
         return render(request,'mainapp/likes.html')
     
     return redirect('login_view')
 
-def library(request):
+def library(request:HttpRequest):
     if request.user.is_authenticated:
         
         return render(request,'mainapp/library.html')
@@ -47,7 +53,7 @@ def profile(request:HttpRequest):
     if request.user.is_authenticated:
         return render(request,"mainapp/profile.html")
 
-def getExploredata(request):
+def getExploredata(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.get_explore_sync()
@@ -55,14 +61,14 @@ def getExploredata(request):
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
 
-def getSuggestions(request):
+def getSuggestions(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.get_suggestions(request.GET.get('query'))
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def createFileResponse(request,songId=None):
+def createFileResponse(request:HttpRequest,songId=None):
     if request:
         songId = request.GET.get("query")
     file_path = f'mainapp/static/mainapp/player/songs/{songId}.m4a'
@@ -86,35 +92,35 @@ def clearSongs(request:HttpRequest):
             os.remove(os.path.join("mainapp/static/mainapp/player/songs/",file))
     return JsonResponse({})
 
-def getSearch(request):
+def getSearch(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getSearch(request.GET.get('query'))
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def getPlaylist(request):
+def getPlaylist(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getPlaylist(request.GET.get('query'))
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def getAlbum(request):
+def getAlbum(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getAlbum(request.GET.get('query'))
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def getArtist(request):
+def getArtist(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getArtist(request.GET.get('query'))
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def getMoodpl(request):
+def getMoodpl(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getMoodpl(request.GET.get('query'))
@@ -122,7 +128,7 @@ def getMoodpl(request):
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
 
-def getRelated(request):
+def getRelated(request:HttpRequest):
     if request.user.is_authenticated:
         inst = goofyapi.Goofyapi()
         data = inst.getRelated(request.GET.get('query'))
@@ -134,7 +140,7 @@ def getRelated(request):
         return JsonResponse(data)
     return HttpResponseForbidden("You do not have permission to access this page.") 
 
-def like_song(request):
+def like_song(request:HttpRequest):
     if request.method == "POST" and request.user.is_authenticated:
         liked_song, created = LikedSong.objects.get_or_create(user=request.user, song_id=request.POST.get('query'))
         if created:
@@ -142,7 +148,7 @@ def like_song(request):
         return JsonResponse({'status': 'already liked'})
 
 
-def unlike_song(request):
+def unlike_song(request:HttpRequest):
     if request.method == "POST" and request.user.is_authenticated:
         liked_song = LikedSong.objects.filter(user=request.user, song_id=request.POST.get('query')).first()
         if liked_song:

@@ -1,9 +1,4 @@
-{% extends "mainapp/base.html" %}
 {% load static %}
-
-
-{% block title %}Home{% endblock title %}
-{% block content %}
 
 <div id="allelements" class=" flex flex-col ml-2 sm:ml-[100px]">
 
@@ -124,15 +119,28 @@
     </div>
 
 </div>
-{% endblock content %}
 
 
-
-{% block script %}
 
 <script>
 
+    $('#homebox').removeClass('hover:border-l-white').addClass('hover:border-l-[#5398C9]');
+    $('#explorebox').removeClass('hover:border-l-white').addClass('hover:border-l-[#5398C9]');
+    $('#librarybox').removeClass('hover:border-l-white').addClass('hover:border-l-[#5398C9]');
+    $('#likedsongsbox').removeClass('hover:border-l-white').addClass('hover:border-l-[#5398C9]');
+    $('#profilebox').removeClass('hover:border-l-white').addClass('hover:border-l-[#5398C9]');
+    $('#lchild').removeClass("gradnav");
+    $('#lchild').addClass("bg-transparent");
 
+    $("#exploreimg").attr("src", "{% static 'mainapp/homepageassets/explore2.svg' %}");
+    $("#homeimg").attr("src", "{% static 'mainapp/homepageassets/home1.svg' %}");
+    $('#libimg').attr("src", "{% static 'mainapp/homepageassets/library2.svg' %}");
+    $('#likedsongsimg').attr("src", "{% static 'mainapp/homepageassets/mylikes2.svg' %}");
+    $('#profileimg').attr("src", "{% static 'mainapp/homepageassets/profile2.svg' %}");
+    $('body').removeClass("bg-gradient-to-r from-[#0f0f0f] from-5% via-[#1a1a1a] via-20% via-[#3e6b8f] via-50% to-[#002b5c] to-90%");
+    $('html, body').css(
+                            'background-color', '#121212'
+                        );
     $("#grad-control").addClass("gradnav1");
     $("#grad-control").append(`
         <div id="allelements1" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
@@ -180,6 +188,7 @@
 
 </script>
 <script src="{% static 'mainapp/homepageassets/newhome.js' %}"></script>
+
 <script>
     $(document).ready(function insertData() {
         $.ajax({
@@ -387,5 +396,3 @@
 
 </script>
 
-{% endblock script %}
-<!-- <script>$('#parentscrolldiv1').empty();</script> -->

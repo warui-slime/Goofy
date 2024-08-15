@@ -1,9 +1,8 @@
-{% extends "mainapp/base.html" %}
+
 {% load static %}
 
 
-{% block title %}Likes{% endblock title %}
-{% block content %}
+
 <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
 
     <div class="flex-col poppins-regular mt-16 ">
@@ -38,15 +37,20 @@
 
     </div>
 </div>
-{% endblock content %}
-{% block script %}
+
 <script>
+    $("#grad-control").removeClass("gradnav1");
+    $("#allelements1").remove();
     $('#libimg').attr("src", "{% static 'mainapp/homepageassets/library2.svg' %}");
     $('#homeimg').attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
     $('#exploreimg').attr("src", "{% static 'mainapp/homepageassets/explore2.svg' %}");
     $('#likedsongsimg').attr("src", "{% static 'mainapp/homepageassets/mylikes1.svg' %}");
     $('#profileimg').attr("src", "{% static 'mainapp/homepageassets/profile2.svg' %}");
 
+    $('body').removeClass("bg-gradient-to-r from-[#0f0f0f] from-5% via-[#1a1a1a] via-20% via-[#3e6b8f] via-50% to-[#002b5c] to-90%");
+    $('html, body').css(
+                            'background-color', '#121212'
+                        );
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
@@ -103,4 +107,3 @@
     })
 
 </script>
-{% endblock script %}

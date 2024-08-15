@@ -1,9 +1,4 @@
-{% extends "mainapp/base.html" %}
 {% load static %}
-
-
-{% block title %}Explore{% endblock title %}
-{% block content %}
 <div id="allelements" class="pt-8 flex flex-col ml-2 sm:ml-[100px] ">
     <div id="ribbonbox" class="flex poppins-regular  scroll-smooth  w-[98%] space-x-4 mt-20">
         <a class="  text-white hover:text-black text-lg   hover:bg-[#1d88e6] rounded-full hover:border-white border-2 border-[#1d88e6]  hover:shadow-white hover:scale-110 "
@@ -127,20 +122,26 @@
 
 </div>
 
-{% endblock content %}
 
 
 
 
-{% block script %}
+
 <script>
+    $("#grad-control").removeClass("gradnav1");
+    $("#allelements1").remove();
+
+
     $("#exploreimg").attr("src", "{% static 'mainapp/homepageassets/explore1.svg' %}");
     $("#homeimg").attr("src", "{% static 'mainapp/homepageassets/home2.svg' %}");
     $('#libimg').attr("src", "{% static 'mainapp/homepageassets/library2.svg' %}");
     $('#likedsongsimg').attr("src", "{% static 'mainapp/homepageassets/mylikes2.svg' %}");
     $('#profileimg').attr("src", "{% static 'mainapp/homepageassets/profile2.svg' %}");
-
-
+    
+    $('body').removeClass("bg-gradient-to-r from-[#0f0f0f] from-5% via-[#1a1a1a] via-20% via-[#3e6b8f] via-50% to-[#002b5c] to-90%");
+    $('html, body').css(
+                            'background-color', '#121212'
+                        );
     $('#homebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#explorebox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
     $('#librarybox').removeClass('hover:border-l-[#5398C9]').addClass('hover:border-l-white');
@@ -295,4 +296,3 @@
 
 </script>
 
-{% endblock script %}
