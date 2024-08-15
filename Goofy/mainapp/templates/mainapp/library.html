@@ -139,7 +139,7 @@ modalClose.addEventListener('click', function () {
             response.playlists.forEach(playlist => {
                 $("#playlistgrid").append(
                     `
-                <button class="relative group hover:scale-110 w-40" playlist_id=${playlist.playlist_id} onclick="showPlaylist('${playlist.playlist_id}')">
+                <button class="relative group hover:scale-110 w-40" playlist_id=${playlist.playlist_id} onclick="showPlaylist('${playlist.playlist_id}','${playlist.name}')">
         <div class="relative">
             <img class="group-hover:opacity-50 w-full" src="{% static 'mainapp/libraryassets/songdp.svg' %}" alt="">
             
@@ -182,7 +182,7 @@ modalClose.addEventListener('click', function () {
 </script>
 <script>
     let playlist_songs=[];
-    function showPlaylist(playlist_id) {
+    function showPlaylist(playlist_id,playlist_name) {
         $.get({
             url: "{% url 'getPlaylistData' %}",
             data: {
@@ -200,7 +200,7 @@ modalClose.addEventListener('click', function () {
                 $("#allelements").empty();
                 $("#allelements").append(
                     `<div class="text-white  flex w-[98%] text-[30px] mt-12  space-x-2 ">
-                    
+                    <div class="montserrat">${playlist_name}</div>
                 </div>
                 <hr class="my-2 mr-2 bg-white">
                     

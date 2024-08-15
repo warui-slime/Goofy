@@ -8,7 +8,7 @@ from django.contrib import messages
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('index')
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         print(form.is_valid())
@@ -28,7 +28,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('index')
             else:
                 messages.error(request, "Invalid username or password.")
         else:

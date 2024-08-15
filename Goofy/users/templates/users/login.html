@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Inter:wght@100..900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'mainapp/homepageassets/style.css' %}">
   <title>Goofy - Login</title>
   <style>
     .popup {
@@ -92,7 +92,7 @@
         {% csrf_token %}
       <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/glogo.svg' %}" alt=""></button>
       </form>
-      <form action="{% provider_login_url 'facebook' %}" method="post">
+      <form action="" method="post">
         {% csrf_token %}
       <button type="submit"><img class="w-[33px] h-[33px]" src="{% static 'users/flogo.svg' %}" alt=""></button>
       </form>
