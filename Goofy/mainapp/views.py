@@ -210,7 +210,7 @@ def createPlaylist(request: HttpRequest):
                     description=description,
                     song_ids=song_id  # Include song_ids if applicable
                 )
-                return redirect('library')
+                return JsonResponse({'success':"OK"})
             except ValidationError as e:
                 return JsonResponse({'error': str(e)}, status=400)
         return JsonResponse({'error': 'Name is required'}, status=400)

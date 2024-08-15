@@ -58,14 +58,16 @@
                             </div>
                             <div id="explore" class="text-center pt-0.5 sm:hidden">Explore</div>
                         </button>
-                        <button id="librarybox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                        <button id="librarybox"
+                            class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
                             onclick="setLibraryPage()">
                             <div title="Library"><img id="libimg"
                                     src="{% static 'mainapp/homepageassets/library2.svg' %}" alt="">
                             </div>
                             <div id="library" class="text-center pt-0.5 sm:hidden">Library</div>
                         </button>
-                        <button id="likedsongsbox" class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
+                        <button id="likedsongsbox"
+                            class=" hover:bg-[#404040] hover:border-l-[6px] hover:border-l-[#5398C9]"
                             onclick="setLikePage()">
                             <div title="My Likes"><img id="likedsongsimg"
                                     src="{% static 'mainapp/homepageassets/mylikes2.svg' %}" alt="">
@@ -147,7 +149,7 @@
 
     <div id="main-content">
 
-        {% block content %} {% endblock content %}
+
     </div>
     <!-- Notification Container -->
     <div id="notification-container" class="notification-container"></div>
@@ -650,15 +652,16 @@
 
 
         document.addEventListener("keydown", function (event) {
-            if (event.key == " " && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
+            
+            if (event.key == " " && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("lib-description")) {
                 event.preventDefault();
                 playpause();
             }
-            else if ((event.key == "m" || event.key == "M") && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
+            else if ((event.key == "m" || event.key == "M") && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("lib-description")) {
                 event.preventDefault();
                 volbtn();
             }
-            else if (event.key == "ArrowRight" && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("description")) {
+            else if (event.key == "ArrowRight" && document.activeElement != document.getElementById("searchcontent") && document.activeElement != document.getElementById("name") && document.activeElement != document.getElementById("lib-description")) {
 
                 event.preventDefault();
                 if (document.activeElement == document.getElementById("volumeslider") || document.activeElement == document.getElementById("volumebutton")) {
@@ -1653,7 +1656,7 @@
     </script>
     <script>
         function setHomePage() {
-            document.title="Home";
+            document.title = "Home";
             $.ajax({
                 url: "{% url 'home' %}",
                 type: "GET",
@@ -1667,7 +1670,7 @@
             });
         }
         function setExplorePage() {
-            document.title="Explore";
+            document.title = "Explore";
             $.ajax({
                 url: "{% url 'explore' %}",
                 type: "GET",
@@ -1681,7 +1684,7 @@
             });
         }
         function setLibraryPage() {
-            document.title="Library";
+            document.title = "Library";
             $.ajax({
                 url: "{% url 'library' %}",
                 type: "GET",
@@ -1691,11 +1694,12 @@
                 success: function (response) {
                     $("#main-content").html(response);
 
+
                 }
             });
         }
         function setLikePage() {
-            document.title="Mylikes";
+            document.title = "Mylikes";
             $.ajax({
                 url: "{% url 'mylikes' %}",
                 type: "GET",
@@ -1709,7 +1713,7 @@
             });
         }
         function setProfilePage() {
-            document.title="My Profile";
+            document.title = "My Profile";
             $.ajax({
                 url: "{% url 'profile' %}",
                 type: "GET",
