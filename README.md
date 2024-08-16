@@ -36,7 +36,6 @@ Goofy is a feature-rich music streaming platform designed to provide users with 
 - **Other Features**: Email integration for password reset
 
 ## Installation
-
 1. Clone the repository:
    ```bash
    git clone https://github.com/warui-slime/Goofy.git
@@ -47,15 +46,17 @@ Goofy is a feature-rich music streaming platform designed to provide users with 
    pip install -r requirements.txt
 3. Database Configuration:
    The `DATABASES` setting in `settings.py` defines the configuration for the database used by the Goofy Music App. The app uses PostgreSQL as its database management system.   Below is a breakdown of the configuration:
-
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'your database name', 
-        'USER':'postgres username',
-        'PASSWORD': 'yourdatabasepasskey',
-        'HOST':'localhost'
-    }
-}
+  ```python
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.postgresql',
+          'NAME': 'your database name', 
+          'USER':'postgres username',
+          'PASSWORD': 'yourdatabasepasskey',
+          'HOST':'localhost'
+      }
+  }
+```
+## Homepage
+![goofy](https://github.com/user-attachments/assets/5870d746-23fe-417b-a484-e2cf9ab20e33)
 
