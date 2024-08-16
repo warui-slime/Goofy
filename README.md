@@ -52,9 +52,9 @@ Goofy is a feature-rich music streaming platform designed to provide users with 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'goofyuserdb',
-        'USER':'postgres',
-        'PASSWORD': os.environ.get('postgrepass'),
+        'NAME': 'your database name', 
+        'USER':'postgres username',
+        'PASSWORD': 'yourdatabasepasskey',
         'HOST':'localhost'
     }
 }
