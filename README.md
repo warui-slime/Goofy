@@ -41,3 +41,10 @@ Goofy is a feature-rich music streaming platform designed to provide users with 
    ```bash
    git clone https://github.com/warui-slime/Goofy.git
    cd goofy
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+3. Set up the database:
+   ```bash
+   python manage.py migrate
