@@ -46,7 +46,7 @@ Goofy is a feature-rich music streaming platform designed to provide users with 
    ```bash
    pip install -r requirements.txt
 3. Database Configuration:
-   The `DATABASES` setting in `settings.py` defines the configuration for the database used by the Goofy Music App. The app uses PostgreSQL as its database management system. Below is a breakdown of the configuration:
+   The `DATABASES` setting in `settings.py` defines the configuration for the database used by the Goofy Music App. The app uses PostgreSQL as its database management system.   Below is a breakdown of the configuration:
 
 ```python
 DATABASES = {
@@ -58,5 +58,4 @@ DATABASES = {
         'HOST':'localhost'
     }
 }
-   ```bash
-   python manage.py migrate
+
